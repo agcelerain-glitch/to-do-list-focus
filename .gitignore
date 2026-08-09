@@ -1,0 +1,27 @@
+# Other folder (memo/private docs)
+other/
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.vercel/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
