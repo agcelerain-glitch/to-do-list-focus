@@ -1,8 +1,9 @@
 import { useAuth } from './hooks/useAuth'
+import { AppProvider } from './contexts/AppContext'
 import Login from './components/Login'
 import MainScreen from './components/MainScreen'
 
-export default function App() {
+function Inner() {
   const { user, login, logout } = useAuth()
 
   if (user === undefined) {
@@ -16,4 +17,12 @@ export default function App() {
   if (!user) return <Login onLogin={login} />
 
   return <MainScreen user={user} onLogout={logout} />
+}
+
+export default function App() {
+  return (
+    <AppProvider>
+      <Inner />
+    </AppProvider>
+  )
 }

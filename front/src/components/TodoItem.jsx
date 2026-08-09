@@ -1,3 +1,5 @@
+import { useAppContext } from '../contexts/AppContext'
+
 function formatDate(ts) {
   if (!ts) return ''
   const d = ts.toDate ? ts.toDate() : new Date(ts)
@@ -10,6 +12,8 @@ function formatDate(ts) {
 }
 
 export default function TodoItem({ todo, onComplete, onRevive, onRemove }) {
+  const { t } = useAppContext()
+
   return (
     <div className={`todo-item${todo.completed ? ' completed' : ''}`}>
       <div className="todo-item-content">
@@ -19,7 +23,7 @@ export default function TodoItem({ todo, onComplete, onRevive, onRemove }) {
         )}
         <div className="todo-item-date">
           {todo.completed
-            ? `完了: ${formatDate(todo.completedAt)}`
+            ? `${t.list.completedPrefix}${formatDate(todo.completedAt)}`
             : formatDate(todo.createdAt)
           }
         </div>
@@ -30,7 +34,7 @@ export default function TodoItem({ todo, onComplete, onRevive, onRemove }) {
           <button
             className="action-btn btn-complete"
             onClick={() => onComplete(todo.id)}
-            aria-label="完了にする"
+            aria-label="完了"
           >
             <i className="fa-solid fa-check" />
           </button>
@@ -39,7 +43,7 @@ export default function TodoItem({ todo, onComplete, onRevive, onRemove }) {
             <button
               className="action-btn btn-revive"
               onClick={() => onRevive(todo.id)}
-              aria-label="復活させる"
+              aria-label="復活"
             >
               <i className="fa-solid fa-rotate-left" />
             </button>

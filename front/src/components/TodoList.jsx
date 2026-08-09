@@ -1,8 +1,11 @@
 import TodoItem from './TodoItem'
+import { useAppContext } from '../contexts/AppContext'
 
 export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, user, onLogout }) {
-  const pending = todos.filter(t => !t.completed)
-  const completed = todos.filter(t => t.completed)
+  const { t } = useAppContext()
+  const l = t.list
+  const pending = todos.filter(todo => !todo.completed)
+  const completed = todos.filter(todo => todo.completed)
 
   return (
     <div className="panel-inner">
@@ -10,7 +13,7 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
         <button className="header-back-btn" onClick={onBack} aria-label="戻る">
           <i className="fa-solid fa-arrow-left" />
         </button>
-        <span className="header-title">タスク一覧</span>
+        <span className="header-title">{l.header}</span>
         <div className="header-actions">
           {user.photoURL && (
             <div className="user-avatar">
@@ -24,16 +27,17 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
       </div>
 
       <div className="todo-list-container">
+        {/* 未達 */}
         <div className="todo-section">
           <div className="todo-section-header">
             <i className="fa-solid fa-circle-dot" style={{ color: '#F59E0B' }} />
-            未達
+            {l.pending}
             <span className="todo-count-badge">{pending.length}</span>
           </div>
           {pending.length === 0 ? (
             <div className="empty-state">
               <i className="fa-solid fa-check-circle" />
-              <p>未達のタスクはありません</p>
+              <p>{l.emptyPending}</p>
             </div>
           ) : (
             pending.map(todo => (
@@ -48,15 +52,16 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
           )}
         </div>
 
+        {/* 達成済 */}
         {completed.length > 0 && (
           <>
             <div className="section-divider-line">
-              <span>達成済</span>
+              <span>{l.completed}</span>
             </div>
             <div className="todo-section">
               <div className="todo-section-header">
                 <i className="fa-solid fa-circle-check" style={{ color: '#10B981' }} />
-                達成済
+                {l.completed}
                 <span className="todo-count-badge">{completed.length}</span>
               </div>
               {completed.map(todo => (

@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { useAppContext } from '../contexts/AppContext'
 
 export default function CreatePanel({ onBack, onAdd }) {
+  const { t } = useAppContext()
+  const c = t.create
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -27,17 +30,17 @@ export default function CreatePanel({ onBack, onAdd }) {
         <button className="header-back-btn" onClick={onBack} aria-label="戻る">
           <i className="fa-solid fa-arrow-left" />
         </button>
-        <span className="header-title">タスクを追加</span>
+        <span className="header-title">{c.header}</span>
       </div>
 
       <div className="create-form-container" onKeyDown={handleKeyDown}>
         <div className="create-form">
           <div className="form-group">
-            <label className="form-label">タイトル *</label>
+            <label className="form-label">{c.titleLabel}</label>
             <input
               className="form-input"
               type="text"
-              placeholder="何をしますか？"
+              placeholder={c.titlePh}
               value={title}
               onChange={e => setTitle(e.target.value)}
               maxLength={100}
@@ -46,10 +49,10 @@ export default function CreatePanel({ onBack, onAdd }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">内容</label>
+            <label className="form-label">{c.contentLabel}</label>
             <textarea
               className="form-textarea"
-              placeholder="詳細を入力（任意）"
+              placeholder={c.contentPh}
               value={content}
               onChange={e => setContent(e.target.value)}
               maxLength={500}
@@ -63,7 +66,7 @@ export default function CreatePanel({ onBack, onAdd }) {
             disabled={!title.trim() || submitting}
           >
             <i className="fa-solid fa-plus" />
-            {submitting ? '追加中...' : 'タスクを追加'}
+            {submitting ? c.submitting : c.submit}
           </button>
         </div>
       </div>
