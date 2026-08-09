@@ -65,12 +65,12 @@ cp front/.env.example front/.env
 `front/.env` に Firebase プロジェクトの値を入力：
 
 ```env
-VITE_FIREBASE_API_KEY=AIzaSy...
-VITE_FIREBASE_AUTH_DOMAIN=to-do-list-focus.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=to-do-list-focus
-VITE_FIREBASE_STORAGE_BUCKET=to-do-list-focus.firebasestorage.app
-VITE_FIREBASE_MESSAGING_SENDER_ID=951719597465
-VITE_FIREBASE_APP_ID=1:951719597465:web:...
+VITE_FIREBASE_API_KEY=*****
+VITE_FIREBASE_AUTH_DOMAIN=*****
+VITE_FIREBASE_PROJECT_ID=*****
+VITE_FIREBASE_STORAGE_BUCKET=*****
+VITE_FIREBASE_MESSAGING_SENDER_ID=*****
+VITE_FIREBASE_APP_ID=*****
 ```
 
 > **Firebase Console** → プロジェクトの設定 → マイアプリ からコピーできます。
@@ -89,7 +89,7 @@ npm run dev
 
 ```bash
 cd firebase
-firebase deploy --only firestore --project to-do-list-focus
+firebase deploy --only firestore --project *****
 ```
 
 ### Vercel へのデプロイ
@@ -104,10 +104,10 @@ firebase deploy --only firestore --project to-do-list-focus
 | Key | Value |
 |-----|-------|
 | `VITE_FIREBASE_API_KEY` | Firebase の apiKey |
-| `VITE_FIREBASE_AUTH_DOMAIN` | `to-do-list-focus.firebaseapp.com` |
-| `VITE_FIREBASE_PROJECT_ID` | `to-do-list-focus` |
-| `VITE_FIREBASE_STORAGE_BUCKET` | `to-do-list-focus.firebasestorage.app` |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | `951719597465` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase の authDomain |
+| `VITE_FIREBASE_PROJECT_ID` | Firebase の projectId |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase の storageBucket |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase の messagingSenderId |
 | `VITE_FIREBASE_APP_ID` | Firebase の appId |
 
 **以降は GitHub main ブランチへの push で自動デプロイ。**
@@ -116,7 +116,7 @@ firebase deploy --only firestore --project to-do-list-focus
 
 ### Google 認証を有効化
 
-1. [Firebase Console](https://console.firebase.google.com) → to-do-list-focus
+1. [Firebase Console](https://console.firebase.google.com) → 対象プロジェクトを選択
 2. Authentication → Sign-in method → Google → 有効にする
 
 ### Vercel ドメインを許可
