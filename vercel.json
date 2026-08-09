@@ -1,5 +1,0 @@
-{
-  "buildCommand": "npm --prefix front install && npm --prefix front run build",
-  "outputDirectory": "front/dist",
-  "framework": null
-}
