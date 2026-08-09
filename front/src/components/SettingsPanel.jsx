@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import { db } from '../firebase/config'
 import { useAppContext } from '../contexts/AppContext'
 
 const LANGS = [
@@ -27,12 +25,12 @@ export default function SettingsPanel({ user, onClose }) {
     if (!msg.trim() || fbStatus !== 'idle') return
     setFbStatus('sending')
     try {
-      await addDoc(collection(db, 'feedback'), {
-        uid: user.uid,
-        message: msg.trim(),
-        lang,
-        createdAt: serverTimestamp(),
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg.trim(), lang, uid: user.uid }),
       })
+      if (!res.ok) throw new Error('failed')
       setMsg('')
       setFbStatus('sent')
       setTimeout(() => setFbStatus('idle'), 3500)
