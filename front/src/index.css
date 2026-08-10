@@ -944,27 +944,30 @@ html, body, #root {
    Color Accessibility Overrides
    ═══════════════════════════════════ */
 
-/* Deuteranopia (緑色弱) – 緑→黄橙、青を強調 */
+/* Deuteranopia (緑色弱) – 黄橙を主要色に（コントラスト比 ~4.8:1）、緑→黄橙 */
 :root.color-deuteranopia {
   --success: #D97706;
-  --primary: #0284C7;
-  --primary-dark: #0369A1;
+  --primary: #B45309;
+  --primary-dark: #92400E;
 }
 
 :root.color-deuteranopia .btn-complete { background: #FFFBEB; color: #D97706; }
 :root.color-deuteranopia .btn-complete:active { background: #FEF3C7; }
+:root.color-deuteranopia .btn-revive { background: #FFFBEB; color: #B45309; }
 :root.color-deuteranopia .todo-section-header i[style*="10B981"] { color: #D97706 !important; }
 :root.color-deuteranopia .empty-state i { color: #D97706; opacity: 1; }
+:root.color-deuteranopia .btn-submit { color: #92400E; }
 
-/* Protanopia (赤色弱) – 赤→紫 */
+/* Protanopia (赤色弱) – 紫を主要色に（コントラスト比 ~5.5:1）、赤→紫 */
 :root.color-protanopia {
   --danger: #7C3AED;
-  --primary: #0284C7;
-  --primary-dark: #0369A1;
+  --primary: #7C3AED;
+  --primary-dark: #6D28D9;
 }
 
 :root.color-protanopia .btn-delete { background: #F5F3FF; color: #7C3AED; }
 :root.color-protanopia .btn-delete:active { background: #EDE9FE; }
+:root.color-protanopia .btn-submit { color: #6D28D9; }
 
 /* High Contrast (高コントラスト) */
 :root.color-highcontrast {

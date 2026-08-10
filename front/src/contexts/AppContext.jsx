@@ -1,7 +1,10 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useLayoutEffect } from 'react'
 import { translations } from '../i18n/translations'
 
 const AppContext = createContext(null)
+
+const COLOR_PREFIX = 'color-'
+const COLOR_KEYS = ['normal', 'deuteranopia', 'protanopia', 'highcontrast']
 
 export function AppProvider({ children }) {
   const [lang, setLangState] = useState(() => localStorage.getItem('lang') || 'ja')
@@ -19,9 +22,12 @@ export function AppProvider({ children }) {
     localStorage.setItem('colorMode', m)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement
-    root.className = colorMode === 'normal' ? '' : `color-${colorMode}`
+    COLOR_KEYS.forEach(k => root.classList.remove(`${COLOR_PREFIX}${k}`))
+    if (colorMode !== 'normal') {
+      root.classList.add(`${COLOR_PREFIX}${colorMode}`)
+    }
   }, [colorMode])
 
   const t = translations[lang] ?? translations.ja

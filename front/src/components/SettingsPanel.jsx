@@ -9,9 +9,9 @@ const LANGS = [
 
 const COLOR_MODES = [
   { key: 'normal',        dot: '#3B82F6' },
-  { key: 'deuteranopia',  dot: '#F59E0B' },
+  { key: 'deuteranopia',  dot: '#B45309' },
   { key: 'protanopia',    dot: '#7C3AED' },
-  { key: 'highcontrast',  dot: '#000000' },
+  { key: 'highcontrast',  dot: '#0000CC' },
 ]
 
 export default function SettingsPanel({ user, onClose }) {
