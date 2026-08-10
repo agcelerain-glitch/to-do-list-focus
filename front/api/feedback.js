@@ -13,6 +13,12 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Message too long' })
   }
 
+  // HTMLタグ・制御文字を除去してプレーンテキストのみ許可
+  const sanitized = message.replace(/<[^>]*>/g, '').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '').trim()
+  if (sanitized.length === 0) {
+    return res.status(400).json({ error: 'Invalid message content' })
+  }
+
   const webhookUrl = process.env.DISCORD_WEBHOOK_API
   if (!webhookUrl) {
     return res.status(500).json({ error: 'Webhook not configured' })
@@ -27,7 +33,7 @@ export default async function handler(req, res) {
       embeds: [
         {
           title: '📝 新しいフィードバック',
-          description: message.trim(),
+          description: sanitized,
           color: 0x3b82f6,
           fields: [
             { name: '言語', value: langLabel, inline: true },
