@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import TodoItem from './TodoItem'
+import TodoDetailModal from './TodoDetailModal'
 import { useAppContext } from '../contexts/AppContext'
 
 export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, user, onLogout }) {
   const { t } = useAppContext()
   const l = t.list
+  const [selectedTodo, setSelectedTodo] = useState(null)
   const pending = todos.filter(todo => !todo.completed)
   const completed = todos.filter(todo => todo.completed)
 
@@ -47,6 +50,7 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
                 onComplete={onComplete}
                 onRevive={onRevive}
                 onRemove={onRemove}
+                onTap={setSelectedTodo}
               />
             ))
           )}
@@ -71,12 +75,17 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
                   onComplete={onComplete}
                   onRevive={onRevive}
                   onRemove={onRemove}
+                  onTap={setSelectedTodo}
                 />
               ))}
             </div>
           </>
         )}
       </div>
+
+      {selectedTodo && (
+        <TodoDetailModal todo={selectedTodo} onClose={() => setSelectedTodo(null)} />
+      )}
     </div>
   )
 }

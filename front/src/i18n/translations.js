@@ -29,6 +29,12 @@ export const translations = {
       emptyPending: '未達のタスクはありません',
       completedPrefix: '完了: ',
     },
+    detail: {
+      close: '閉じる',
+      created: '登録日',
+      completedAt: '完了日',
+      noContent: '（内容なし）',
+    },
     focus: {
       title: 'フォーカスモード',
       subtitle: '集中するタスクを選択してください',
@@ -92,6 +98,12 @@ export const translations = {
       emptyPending: 'No pending tasks',
       completedPrefix: 'Done: ',
     },
+    detail: {
+      close: 'Close',
+      created: 'Created',
+      completedAt: 'Completed',
+      noContent: '(No details)',
+    },
     focus: {
       title: 'Focus Mode',
       subtitle: 'Choose a task to focus on',
@@ -154,6 +166,12 @@ export const translations = {
       completed: '已完成',
       emptyPending: '没有待完成的任务',
       completedPrefix: '完成于: ',
+    },
+    detail: {
+      close: '关闭',
+      created: '创建日期',
+      completedAt: '完成日期',
+      noContent: '（无内容）',
     },
     focus: {
       title: '专注模式',

@@ -11,12 +11,19 @@ function formatDate(ts) {
   })
 }
 
-export default function TodoItem({ todo, onComplete, onRevive, onRemove }) {
+export default function TodoItem({ todo, onComplete, onRevive, onRemove, onTap }) {
   const { t } = useAppContext()
 
   return (
     <div className={`todo-item${todo.completed ? ' completed' : ''}`}>
-      <div className="todo-item-content">
+      <div
+        className="todo-item-content"
+        onClick={() => onTap && onTap(todo)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={e => e.key === 'Enter' && onTap && onTap(todo)}
+        aria-label={`${todo.title} の詳細を表示`}
+      >
         <div className="todo-item-title">{todo.title}</div>
         {todo.content && (
           <div className="todo-item-body">{todo.content}</div>
