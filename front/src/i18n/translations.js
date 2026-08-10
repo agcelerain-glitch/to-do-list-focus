@@ -65,6 +65,11 @@ export const translations = {
         protanopia: '赤色弱（Protanopia）',
         highContrast: '高コントラスト',
       },
+      reload: {
+        title: 'アプリを更新',
+        desc: 'キャッシュをクリアして最新版を読み込みます',
+        btn: '今すぐ更新',
+      },
     },
   },
 
@@ -134,6 +139,11 @@ export const translations = {
         protanopia: 'Red-weak (Protanopia)',
         highContrast: 'High Contrast',
       },
+      reload: {
+        title: 'Update App',
+        desc: 'Clear cache and load the latest version',
+        btn: 'Update Now',
+      },
     },
   },
 
@@ -202,6 +212,11 @@ export const translations = {
         deuteranopia: '绿色弱（Deuteranopia）',
         protanopia: '红色弱（Protanopia）',
         highContrast: '高对比度',
+      },
+      reload: {
+        title: '更新应用',
+        desc: '清除缓存并加载最新版本',
+        btn: '立即更新',
       },
     },
   },

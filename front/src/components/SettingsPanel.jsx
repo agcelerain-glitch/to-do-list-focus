@@ -20,6 +20,20 @@ export default function SettingsPanel({ user, onClose }) {
 
   const [msg, setMsg] = useState('')
   const [fbStatus, setFbStatus] = useState('idle') // idle | sending | sent
+  const [reloading, setReloading] = useState(false)
+
+  const handleReload = async () => {
+    setReloading(true)
+    if ('caches' in window) {
+      const keys = await caches.keys()
+      await Promise.all(keys.map(k => caches.delete(k)))
+    }
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations()
+      await Promise.all(regs.map(r => r.update()))
+    }
+    window.location.reload()
+  }
 
   const sendFeedback = async () => {
     if (!msg.trim() || fbStatus !== 'idle') return
@@ -135,6 +149,23 @@ export default function SettingsPanel({ user, onClose }) {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* ── Reload ── */}
+          <div className="settings-section">
+            <div className="settings-section-title">
+              <i className="fa-solid fa-rotate" />
+              {s.reload.title}
+            </div>
+            <p className="settings-note">{s.reload.desc}</p>
+            <button
+              className="settings-btn-reload"
+              onClick={handleReload}
+              disabled={reloading}
+            >
+              <i className="fa-solid fa-rotate" />
+              {s.reload.btn}
+            </button>
           </div>
 
         </div>

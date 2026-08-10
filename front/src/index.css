@@ -763,6 +763,27 @@ html, body, #root {
 .settings-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .settings-btn-primary:active:not(:disabled) { opacity: 0.85; }
 
+.settings-btn-reload {
+  margin-top: 10px;
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  background: #0F172A;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.settings-btn-reload:disabled { opacity: 0.5; cursor: not-allowed; }
+.settings-btn-reload:active:not(:disabled) { opacity: 0.85; }
+
 .feedback-success {
   margin-top: 10px;
   padding: 14px;
