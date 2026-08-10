@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { message, lang, uid } = req.body ?? {}
+  const { message, lang, uid, displayName, email } = req.body ?? {}
 
   if (!message || typeof message !== 'string' || message.trim().length === 0) {
     return res.status(400).json({ error: 'Invalid message' })
@@ -36,6 +36,8 @@ export default async function handler(req, res) {
           description: sanitized,
           color: 0x3b82f6,
           fields: [
+            { name: 'ユーザー名', value: displayName ?? '不明', inline: true },
+            { name: 'メール', value: email ?? '不明', inline: true },
             { name: '言語', value: langLabel, inline: true },
             { name: 'UID', value: uid ? `\`${uid.slice(0, 8)}…\`` : '不明', inline: true },
           ],

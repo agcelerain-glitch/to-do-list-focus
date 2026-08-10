@@ -28,7 +28,7 @@ export default function SettingsPanel({ user, onClose }) {
       const res = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg.trim(), lang, uid: user.uid }),
+        body: JSON.stringify({ message: msg.trim(), lang, uid: user.uid, displayName: user.displayName, email: user.email }),
       })
       if (!res.ok) throw new Error('failed')
       setMsg('')
