@@ -79,6 +79,7 @@ export const translations = {
         desc: 'キャッシュをクリアして最新版を読み込みます',
         btn: '今すぐ更新',
       },
+      logout: 'ログアウト',
     },
   },
 
@@ -162,6 +163,7 @@ export const translations = {
         desc: 'Clear cache and load the latest version',
         btn: 'Update Now',
       },
+      logout: 'Logout',
     },
   },
 
@@ -245,6 +247,7 @@ export const translations = {
         desc: '清除缓存并加载最新版本',
         btn: '立即更新',
       },
+      logout: '退出登录',
     },
   },
 }

@@ -4,7 +4,7 @@ import TodoDetailModal from './TodoDetailModal'
 import TodoEditModal from './TodoEditModal'
 import { useAppContext } from '../contexts/AppContext'
 
-export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, onUpdate, user, onLogout }) {
+export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, onUpdate }) {
   const { t } = useAppContext()
   const l = t.list
   const [selectedTodo, setSelectedTodo] = useState(null)
@@ -24,16 +24,6 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
           <i className="fa-solid fa-arrow-left" />
         </button>
         <span className="header-title">{l.header}</span>
-        <div className="header-actions">
-          {user.photoURL && (
-            <div className="user-avatar">
-              <img src={user.photoURL} alt={user.displayName} referrerPolicy="no-referrer" />
-            </div>
-          )}
-          <button className="header-icon-btn" onClick={onLogout} aria-label="ログアウト">
-            <i className="fa-solid fa-right-from-bracket" />
-          </button>
-        </div>
       </div>
 
       <div className="todo-list-container">

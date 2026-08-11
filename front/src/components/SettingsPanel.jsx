@@ -14,7 +14,7 @@ const COLOR_MODES = [
   { key: 'highcontrast',  dot: '#0000CC' },
 ]
 
-export default function SettingsPanel({ user, onClose }) {
+export default function SettingsPanel({ user, onClose, onLogout }) {
   const { t, lang, setLang, colorMode, setColorMode } = useAppContext()
   const s = t.settings
 
@@ -69,6 +69,22 @@ export default function SettingsPanel({ user, onClose }) {
 
         {/* Body */}
         <div className="settings-body">
+
+          {/* ── User ── */}
+          <div className="settings-user-card">
+            {user.photoURL && (
+              <img
+                className="settings-user-avatar"
+                src={user.photoURL}
+                alt={user.displayName}
+                referrerPolicy="no-referrer"
+              />
+            )}
+            <div className="settings-user-info">
+              <span className="settings-user-name">{user.displayName}</span>
+              <span className="settings-user-email">{user.email}</span>
+            </div>
+          </div>
 
           {/* ── Feedback ── */}
           <div className="settings-section">
@@ -167,6 +183,15 @@ export default function SettingsPanel({ user, onClose }) {
               {s.reload.btn}
             </button>
           </div>
+
+          {/* ── Logout ── */}
+          <button
+            className="settings-btn-logout"
+            onClick={onLogout}
+          >
+            <i className="fa-solid fa-right-from-bracket" />
+            {s.logout}
+          </button>
 
         </div>
       </div>

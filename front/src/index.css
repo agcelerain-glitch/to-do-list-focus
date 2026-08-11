@@ -866,6 +866,68 @@ html, body, #root {
 .settings-btn-reload:disabled { opacity: 0.5; cursor: not-allowed; }
 .settings-btn-reload:active:not(:disabled) { opacity: 0.85; }
 
+.settings-btn-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: calc(100% - 32px);
+  margin: 4px 16px 24px;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  background: #FEF2F2;
+  color: var(--danger);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.settings-btn-logout:active { background: #FEE2E2; }
+
+/* ─── Settings user card ─── */
+.settings-user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.settings-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.settings-user-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-user-email {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .feedback-success {
   margin-top: 10px;
   padding: 14px;

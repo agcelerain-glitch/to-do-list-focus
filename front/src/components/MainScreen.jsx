@@ -104,8 +104,6 @@ export default function MainScreen({ user, onLogout }) {
             onRevive={revive}
             onUpdate={update}
             onRemove={remove}
-            user={user}
-            onLogout={onLogout}
           />
         )}
         {mode === 'create' && (
@@ -120,7 +118,7 @@ export default function MainScreen({ user, onLogout }) {
 
       {/* ── オーバーレイ ── */}
       {settingsOpen && (
-        <SettingsPanel user={user} onClose={() => setSettingsOpen(false)} />
+        <SettingsPanel user={user} onClose={() => setSettingsOpen(false)} onLogout={onLogout} />
       )}
       {focusOpen && (
         <FocusMode
