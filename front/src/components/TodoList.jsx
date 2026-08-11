@@ -1,12 +1,19 @@
 import { useState } from 'react'
 import TodoItem from './TodoItem'
 import TodoDetailModal from './TodoDetailModal'
+import TodoEditModal from './TodoEditModal'
 import { useAppContext } from '../contexts/AppContext'
 
-export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, user, onLogout }) {
+export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, onUpdate, user, onLogout }) {
   const { t } = useAppContext()
   const l = t.list
   const [selectedTodo, setSelectedTodo] = useState(null)
+  const [editingTodo, setEditingTodo] = useState(null)
+
+  const openEdit = todo => {
+    setSelectedTodo(null)
+    setEditingTodo(todo)
+  }
   const pending = todos.filter(todo => !todo.completed)
   const completed = todos.filter(todo => todo.completed)
 
@@ -51,6 +58,7 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
                 onRevive={onRevive}
                 onRemove={onRemove}
                 onTap={setSelectedTodo}
+                onEdit={openEdit}
               />
             ))
           )}
@@ -84,7 +92,18 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
       </div>
 
       {selectedTodo && (
-        <TodoDetailModal todo={selectedTodo} onClose={() => setSelectedTodo(null)} />
+        <TodoDetailModal
+          todo={selectedTodo}
+          onClose={() => setSelectedTodo(null)}
+          onEdit={openEdit}
+        />
+      )}
+      {editingTodo && (
+        <TodoEditModal
+          todo={editingTodo}
+          onClose={() => setEditingTodo(null)}
+          onSave={onUpdate}
+        />
       )}
     </div>
   )

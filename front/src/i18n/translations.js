@@ -31,9 +31,18 @@ export const translations = {
     },
     detail: {
       close: '閉じる',
-      created: '登録日',
+      created: '更新日',
       completedAt: '完了日',
       noContent: '（内容なし）',
+      edit: '編集する',
+    },
+    edit: {
+      header: 'タスクを編集',
+      titleLabel: 'タイトル *',
+      contentLabel: '内容',
+      save: '保存する',
+      saving: '保存中...',
+      cancel: 'キャンセル',
     },
     focus: {
       title: 'フォーカスモード',
@@ -105,9 +114,18 @@ export const translations = {
     },
     detail: {
       close: 'Close',
-      created: 'Created',
+      created: 'Updated',
       completedAt: 'Completed',
       noContent: '(No details)',
+      edit: 'Edit',
+    },
+    edit: {
+      header: 'Edit Task',
+      titleLabel: 'Title *',
+      contentLabel: 'Details',
+      save: 'Save',
+      saving: 'Saving...',
+      cancel: 'Cancel',
     },
     focus: {
       title: 'Focus Mode',
@@ -179,9 +197,18 @@ export const translations = {
     },
     detail: {
       close: '关闭',
-      created: '创建日期',
+      created: '更新日期',
       completedAt: '完成日期',
       noContent: '（无内容）',
+      edit: '编辑',
+    },
+    edit: {
+      header: '编辑任务',
+      titleLabel: '标题 *',
+      contentLabel: '内容',
+      save: '保存',
+      saving: '保存中...',
+      cancel: '取消',
     },
     focus: {
       title: '专注模式',

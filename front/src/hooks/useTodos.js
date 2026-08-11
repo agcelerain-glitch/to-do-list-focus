@@ -40,8 +40,15 @@ export function useTodos(userId) {
       completedAt: null,
     })
 
+  const update = (id, title, content) =>
+    updateDoc(doc(db, 'users', userId, 'todos', id), {
+      title,
+      content,
+      createdAt: serverTimestamp(),
+    })
+
   const remove = id =>
     deleteDoc(doc(db, 'users', userId, 'todos', id))
 
-  return { todos, add, complete, revive, remove }
+  return { todos, add, complete, revive, update, remove }
 }

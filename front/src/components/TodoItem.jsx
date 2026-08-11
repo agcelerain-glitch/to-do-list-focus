@@ -11,7 +11,7 @@ function formatDate(ts) {
   })
 }
 
-export default function TodoItem({ todo, onComplete, onRevive, onRemove, onTap }) {
+export default function TodoItem({ todo, onComplete, onRevive, onRemove, onTap, onEdit }) {
   const { t } = useAppContext()
 
   return (
@@ -38,13 +38,22 @@ export default function TodoItem({ todo, onComplete, onRevive, onRemove, onTap }
 
       <div className="todo-item-actions">
         {!todo.completed ? (
-          <button
-            className="action-btn btn-complete"
-            onClick={() => onComplete(todo.id)}
-            aria-label="完了"
-          >
-            <i className="fa-solid fa-check" />
-          </button>
+          <>
+            <button
+              className="action-btn btn-edit"
+              onClick={e => { e.stopPropagation(); onEdit && onEdit(todo) }}
+              aria-label="編集"
+            >
+              <i className="fa-solid fa-pen" />
+            </button>
+            <button
+              className="action-btn btn-complete"
+              onClick={() => onComplete(todo.id)}
+              aria-label="完了"
+            >
+              <i className="fa-solid fa-check" />
+            </button>
+          </>
         ) : (
           <>
             <button

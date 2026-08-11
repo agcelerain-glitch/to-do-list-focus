@@ -13,7 +13,7 @@ function formatDate(ts) {
   })
 }
 
-export default function TodoDetailModal({ todo, onClose }) {
+export default function TodoDetailModal({ todo, onClose, onEdit }) {
   const { t } = useAppContext()
   const d = t.detail
 
@@ -57,6 +57,15 @@ export default function TodoDetailModal({ todo, onClose }) {
               <span>{d.completedAt}: {formatDate(todo.completedAt)}</span>
             )}
           </div>
+          {!todo.completed && (
+            <button
+              className="detail-edit-btn"
+              onClick={() => { onClose(); onEdit && onEdit(todo) }}
+            >
+              <i className="fa-solid fa-pen" />
+              {d.edit}
+            </button>
+          )}
         </div>
       </div>
     </div>

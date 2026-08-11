@@ -12,7 +12,7 @@ export default function MainScreen({ user, onLogout }) {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [focusOpen, setFocusOpen] = useState(false)
   const touchStartY = useRef(null)
-  const { todos, add, complete, revive, remove } = useTodos(user.uid)
+  const { todos, add, complete, revive, update, remove } = useTodos(user.uid)
   const pendingCount = todos.filter(todo => !todo.completed).length
 
   const handleTouchStart = (e) => {
@@ -102,6 +102,7 @@ export default function MainScreen({ user, onLogout }) {
             onBack={() => setMode('split')}
             onComplete={complete}
             onRevive={revive}
+            onUpdate={update}
             onRemove={remove}
             user={user}
             onLogout={onLogout}
