@@ -4,7 +4,7 @@ import TodoDetailModal from './TodoDetailModal'
 import TodoEditModal from './TodoEditModal'
 import { useAppContext } from '../contexts/AppContext'
 
-export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, onUpdate }) {
+export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, onUpdate, listRef }) {
   const { t } = useAppContext()
   const l = t.list
   const [selectedTodo, setSelectedTodo] = useState(null)
@@ -26,7 +26,7 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
         <span className="header-title">{l.header}</span>
       </div>
 
-      <div className="todo-list-container">
+      <div className="todo-list-container" ref={listRef}>
         {/* 未達 */}
         <div className="todo-section">
           <div className="todo-section-header">

@@ -12,11 +12,19 @@ export default function MainScreen({ user, onLogout }) {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [focusOpen, setFocusOpen] = useState(false)
   const touchStartY = useRef(null)
+  const listAtTop = useRef(true)
+  const listContainerRef = useRef(null)
   const { todos, add, complete, revive, update, remove } = useTodos(user.uid)
   const pendingCount = todos.filter(todo => !todo.completed).length
 
   const handleTouchStart = (e) => {
     touchStartY.current = e.touches[0].clientY
+    // list モード時、タッチ開始時点のスクロール位置を記録
+    if (listContainerRef.current) {
+      listAtTop.current = listContainerRef.current.scrollTop === 0
+    } else {
+      listAtTop.current = true
+    }
   }
 
   const handleTouchEnd = (e) => {
@@ -25,6 +33,8 @@ export default function MainScreen({ user, onLogout }) {
     touchStartY.current = null
     if (Math.abs(delta) < 60) return
     if (delta > 0) {
+      // 下スワイプ: list モードの場合はリストが最上部のときのみ発火
+      if (mode === 'list' && !listAtTop.current) return
       setMode(prev => prev === 'list' ? 'split' : 'create')
     } else {
       setMode(prev => prev === 'create' ? 'split' : 'list')
@@ -104,6 +114,7 @@ export default function MainScreen({ user, onLogout }) {
             onRevive={revive}
             onUpdate={update}
             onRemove={remove}
+            listRef={listContainerRef}
           />
         )}
         {mode === 'create' && (
