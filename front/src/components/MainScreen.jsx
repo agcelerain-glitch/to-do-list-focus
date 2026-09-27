@@ -18,6 +18,11 @@ export default function MainScreen({ user, onLogout }) {
   const pendingCount = todos.filter(todo => !todo.completed).length
 
   const handleTouchStart = (e) => {
+    // textarea・input・contenteditable 上はスワイプを無効化
+    if (e.target.closest('textarea, input, [contenteditable="true"]')) {
+      touchStartY.current = null
+      return
+    }
     touchStartY.current = e.touches[0].clientY
     // list モード時、タッチ開始時点のスクロール位置を記録
     if (listContainerRef.current) {
