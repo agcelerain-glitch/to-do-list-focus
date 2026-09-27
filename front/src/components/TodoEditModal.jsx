@@ -24,7 +24,7 @@ export default function TodoEditModal({ todo, onClose, onSave }) {
   }
 
   return (
-    <div className="detail-overlay" onClick={onClose}>
+    <div className="detail-overlay" onClick={onClose} onTouchStart={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
       <div
         className="detail-sheet"
         onClick={ev => ev.stopPropagation()}
