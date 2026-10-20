@@ -23,7 +23,7 @@ export default function CreatePanel({ onBack, onAdd }) {
     }
   }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleSubmit()
   }
 

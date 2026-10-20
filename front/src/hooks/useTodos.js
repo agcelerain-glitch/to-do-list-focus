@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
 import {
-  collection, addDoc, updateDoc, deleteDoc,
-  doc, onSnapshot, query, orderBy, serverTimestamp,
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp,
 } from 'firebase/firestore'
 import { db } from '../firebase/config'
 
@@ -10,10 +17,7 @@ export function useTodos(userId) {
 
   useEffect(() => {
     if (!userId) return
-    const q = query(
-      collection(db, 'users', userId, 'todos'),
-      orderBy('createdAt', 'desc'),
-    )
+    const q = query(collection(db, 'users', userId, 'todos'), orderBy('createdAt', 'desc'))
     return onSnapshot(q, snap => {
       setTodos(snap.docs.map(d => ({ id: d.id, ...d.data() })))
     })
@@ -54,8 +58,7 @@ export function useTodos(userId) {
   const setPriority = (id, priority) =>
     updateDoc(doc(db, 'users', userId, 'todos', id), { priority })
 
-  const remove = id =>
-    deleteDoc(doc(db, 'users', userId, 'todos', id))
+  const remove = id => deleteDoc(doc(db, 'users', userId, 'todos', id))
 
   return { todos, add, complete, revive, update, setPriority, remove }
 }

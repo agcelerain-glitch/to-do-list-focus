@@ -38,14 +38,11 @@ export default function TodoItem({ todo, onComplete, onRevive, onRemove, onTap, 
           )}
           {todo.title}
         </div>
-        {todo.content && (
-          <div className="todo-item-body">{todo.content}</div>
-        )}
+        {todo.content && <div className="todo-item-body">{todo.content}</div>}
         <div className="todo-item-date">
           {todo.completed
             ? `${t.list.completedPrefix}${formatDate(todo.completedAt)}`
-            : formatDate(todo.createdAt)
-          }
+            : formatDate(todo.createdAt)}
         </div>
       </div>
 
@@ -54,7 +51,10 @@ export default function TodoItem({ todo, onComplete, onRevive, onRemove, onTap, 
           <>
             <button
               className="action-btn btn-edit"
-              onClick={e => { e.stopPropagation(); onEdit && onEdit(todo) }}
+              onClick={e => {
+                e.stopPropagation()
+                onEdit && onEdit(todo)
+              }}
               aria-label="編集"
             >
               <i className="fa-solid fa-pen" />

@@ -17,7 +17,7 @@ export default function MainScreen({ user, onLogout }) {
   const { todos, add, complete, revive, update, setPriority, remove } = useTodos(user.uid)
   const pendingCount = todos.filter(todo => !todo.completed).length
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = e => {
     // textarea・input・contenteditable 上はスワイプを無効化
     if (e.target.closest('textarea, input, [contenteditable="true"]')) {
       touchStartY.current = null
@@ -32,7 +32,7 @@ export default function MainScreen({ user, onLogout }) {
     }
   }
 
-  const handleTouchEnd = (e) => {
+  const handleTouchEnd = e => {
     if (touchStartY.current === null) return
     const delta = e.changedTouches[0].clientY - touchStartY.current
     touchStartY.current = null
@@ -40,15 +40,13 @@ export default function MainScreen({ user, onLogout }) {
     if (delta > 0) {
       // 下スワイプ: list モードの場合はリストが最上部のときのみ発火
       if (mode === 'list' && !listAtTop.current) return
-      setMode(prev => prev === 'list' ? 'split' : 'create')
+      setMode(prev => (prev === 'list' ? 'split' : 'create'))
     } else {
-      setMode(prev => prev === 'create' ? 'split' : 'list')
+      setMode(prev => (prev === 'create' ? 'split' : 'list'))
     }
   }
 
-  const pendingText = pendingCount > 0
-    ? t.tab.pendingN.replace('{n}', pendingCount)
-    : t.tab.noTask
+  const pendingText = pendingCount > 0 ? t.tab.pendingN.replace('{n}', pendingCount) : t.tab.noTask
 
   return (
     <div
@@ -67,9 +65,7 @@ export default function MainScreen({ user, onLogout }) {
             <div className="split-hint">{t.tab.swipeDown}</div>
           </button>
         )}
-        {mode === 'create' && (
-          <CreatePanel onBack={() => setMode('split')} onAdd={add} />
-        )}
+        {mode === 'create' && <CreatePanel onBack={() => setMode('split')} onAdd={add} />}
         {mode === 'list' && (
           <button className="tab-bar tab-create" onClick={() => setMode('create')}>
             <i className="fa-solid fa-chevron-down" />
@@ -127,7 +123,8 @@ export default function MainScreen({ user, onLogout }) {
           <button className="tab-bar tab-list" onClick={() => setMode('list')}>
             <i className="fa-solid fa-chevron-up" />
             <span>
-              {t.tab.viewTask}{pendingCount > 0 ? ` (${pendingCount})` : ''}
+              {t.tab.viewTask}
+              {pendingCount > 0 ? ` (${pendingCount})` : ''}
             </span>
           </button>
         )}
@@ -141,7 +138,7 @@ export default function MainScreen({ user, onLogout }) {
         <FocusMode
           todos={todos}
           onClose={() => setFocusOpen(false)}
-          onComplete={async (id) => {
+          onComplete={async id => {
             await complete(id)
             setFocusOpen(false)
           }}

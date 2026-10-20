@@ -12,12 +12,12 @@ export function AppProvider({ children }) {
     () => localStorage.getItem('colorMode') || 'normal',
   )
 
-  const setLang = (l) => {
+  const setLang = l => {
     setLangState(l)
     localStorage.setItem('lang', l)
   }
 
-  const setColorMode = (m) => {
+  const setColorMode = m => {
     setColorModeState(m)
     localStorage.setItem('colorMode', m)
   }

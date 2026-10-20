@@ -8,10 +8,10 @@ const LANGS = [
 ]
 
 const COLOR_MODES = [
-  { key: 'normal',        dot: '#3B82F6' },
-  { key: 'deuteranopia',  dot: '#B45309' },
-  { key: 'protanopia',    dot: '#7C3AED' },
-  { key: 'highcontrast',  dot: '#0000CC' },
+  { key: 'normal', dot: '#3B82F6' },
+  { key: 'deuteranopia', dot: '#B45309' },
+  { key: 'protanopia', dot: '#7C3AED' },
+  { key: 'highcontrast', dot: '#0000CC' },
 ]
 
 export default function SettingsPanel({ user, onClose, onLogout }) {
@@ -42,7 +42,13 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
       const res = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg.trim(), lang, uid: user.uid, displayName: user.displayName, email: user.email }),
+        body: JSON.stringify({
+          message: msg.trim(),
+          lang,
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+        }),
       })
       if (!res.ok) throw new Error('failed')
       setMsg('')
@@ -69,7 +75,6 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
 
         {/* Body */}
         <div className="settings-body">
-
           {/* ── User ── */}
           <div className="settings-user-card">
             {user.photoURL && (
@@ -151,14 +156,18 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
                   className={`settings-color-btn${colorMode === m.key ? ' active' : ''}`}
                   onClick={() => setColorMode(m.key)}
                 >
-                  <span
-                    className="color-dot"
-                    style={{ background: m.dot }}
-                  />
-                  {s.color[m.key === 'highcontrast' ? 'highContrast'
-                    : m.key === 'deuteranopia' ? 'deuteranopia'
-                    : m.key === 'protanopia' ? 'protanopia'
-                    : 'normal']}
+                  <span className="color-dot" style={{ background: m.dot }} />
+                  {
+                    s.color[
+                      m.key === 'highcontrast'
+                        ? 'highContrast'
+                        : m.key === 'deuteranopia'
+                          ? 'deuteranopia'
+                          : m.key === 'protanopia'
+                            ? 'protanopia'
+                            : 'normal'
+                    ]
+                  }
                   {colorMode === m.key && (
                     <i className="fa-solid fa-check" style={{ marginLeft: 'auto', fontSize: 14 }} />
                   )}
@@ -174,25 +183,17 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
               {s.reload.title}
             </div>
             <p className="settings-note">{s.reload.desc}</p>
-            <button
-              className="settings-btn-reload"
-              onClick={handleReload}
-              disabled={reloading}
-            >
+            <button className="settings-btn-reload" onClick={handleReload} disabled={reloading}>
               <i className="fa-solid fa-rotate" />
               {s.reload.btn}
             </button>
           </div>
 
           {/* ── Logout ── */}
-          <button
-            className="settings-btn-logout"
-            onClick={onLogout}
-          >
+          <button className="settings-btn-logout" onClick={onLogout}>
             <i className="fa-solid fa-right-from-bracket" />
             {s.logout}
           </button>
-
         </div>
       </div>
     </div>

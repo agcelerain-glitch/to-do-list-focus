@@ -32,7 +32,12 @@ export default function TodoDetailModal({ todo, onClose, onEdit, onSetPriority }
   }, [onClose])
 
   return (
-    <div className="detail-overlay" onClick={onClose} onTouchStart={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
+    <div
+      className="detail-overlay"
+      onClick={onClose}
+      onTouchStart={e => e.stopPropagation()}
+      onTouchEnd={e => e.stopPropagation()}
+    >
       <div
         className="detail-sheet"
         onClick={e => e.stopPropagation()}
@@ -44,10 +49,21 @@ export default function TodoDetailModal({ todo, onClose, onEdit, onSetPriority }
 
         <div className="detail-header">
           <span className="detail-title-label">
-            {todo.completed
-              ? <><i className="fa-solid fa-circle-check" style={{ color: '#10B981', marginRight: 8 }} /></>
-              : <><i className="fa-solid fa-circle-dot" style={{ color: '#F59E0B', marginRight: 8 }} /></>
-            }
+            {todo.completed ? (
+              <>
+                <i
+                  className="fa-solid fa-circle-check"
+                  style={{ color: '#10B981', marginRight: 8 }}
+                />
+              </>
+            ) : (
+              <>
+                <i
+                  className="fa-solid fa-circle-dot"
+                  style={{ color: '#F59E0B', marginRight: 8 }}
+                />
+              </>
+            )}
             {todo.title}
           </span>
           <button className="detail-close-btn" onClick={onClose} aria-label={d.close}>
@@ -60,16 +76,23 @@ export default function TodoDetailModal({ todo, onClose, onEdit, onSetPriority }
             {todo.content || <span className="detail-no-content">{d.noContent}</span>}
           </p>
           <div className="detail-meta">
-            <span>{d.created}: {formatDate(todo.createdAt)}</span>
+            <span>
+              {d.created}: {formatDate(todo.createdAt)}
+            </span>
             {todo.completed && todo.completedAt && (
-              <span>{d.completedAt}: {formatDate(todo.completedAt)}</span>
+              <span>
+                {d.completedAt}: {formatDate(todo.completedAt)}
+              </span>
             )}
           </div>
           {!todo.completed && (
             <div className="detail-actions">
               <button
                 className="detail-edit-btn"
-                onClick={() => { onClose(); onEdit && onEdit(todo) }}
+                onClick={() => {
+                  onClose()
+                  onEdit && onEdit(todo)
+                }}
               >
                 <i className="fa-solid fa-pen" />
                 {d.edit}

@@ -13,7 +13,7 @@ export function priorityRank(p) {
 
 // Font Awesome 6 アイコン。向き/形で高中低を区別（色に依存しない）。
 export const PRIORITY_ICON = {
-  high: 'fa-angles-up',   // 二重上矢印
-  mid: 'fa-minus',        // 横棒
-  low: 'fa-angles-down',  // 二重下矢印
+  high: 'fa-angles-up', // 二重上矢印
+  mid: 'fa-minus', // 横棒
+  low: 'fa-angles-down', // 二重下矢印
 }

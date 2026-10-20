@@ -42,9 +42,7 @@ export default function FocusMode({ todos, onClose, onComplete }) {
                   onClick={() => setFocusTask(todo)}
                 >
                   <span className="focus-task-title">{todo.title}</span>
-                  {todo.content && (
-                    <span className="focus-task-body">{todo.content}</span>
-                  )}
+                  {todo.content && <span className="focus-task-body">{todo.content}</span>}
                   <i className="fa-solid fa-arrow-right focus-task-arrow" />
                 </button>
               ))
@@ -69,16 +67,10 @@ export default function FocusMode({ todos, onClose, onComplete }) {
             </div>
             <div className="focus-declaration">{f.declaration}</div>
             <div className="focus-active-title">{focusTask.title}</div>
-            {focusTask.content && (
-              <div className="focus-active-body">{focusTask.content}</div>
-            )}
+            {focusTask.content && <div className="focus-active-body">{focusTask.content}</div>}
           </div>
 
-          <button
-            className="focus-complete-btn"
-            onClick={handleComplete}
-            disabled={completing}
-          >
+          <button className="focus-complete-btn" onClick={handleComplete} disabled={completing}>
             <i className="fa-solid fa-check" />
             {f.complete}
           </button>
