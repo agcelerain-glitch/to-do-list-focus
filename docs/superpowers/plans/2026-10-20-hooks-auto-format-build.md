@@ -64,7 +64,7 @@ dev-dist
 
 Run:
 ```powershell
-npx --prefix front prettier --check "front/src/**/*.{js,jsx,css}"
+node "front/node_modules/prettier/bin/prettier.cjs" --check "front/src/**/*.{js,jsx,css}"
 ```
 Expected: `All matched files use Prettier code style!`
 もし差分が出るファイルがあれば、そのファイルは既存スタイルと設定の乖離がある。`.prettierrc.json` を既存スタイルへ寄せるか、対象を個別整形してから次へ進む（大量 diff を避けるため、設定側の調整を優先）。
@@ -104,8 +104,11 @@ git commit -m "chore: front に prettier を導入（既存スタイル準拠の
  *   - commit/push は行わない（実行者が実行）
  */
 import { spawnSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
 
 const ROOT = process.cwd()
+// front にローカル導入した prettier を node 経由で呼ぶ（OS 非依存・cwd=ROOT 基準）
+const PRETTIER_BIN = 'front/node_modules/prettier/bin/prettier.cjs'
 
 const sh = (cmd) =>
   spawnSync(cmd, { cwd: ROOT, encoding: 'utf8', shell: true })
@@ -130,11 +133,12 @@ function formatTargets(paths) {
 // prettier 未導入なら skipped=true。
 function formatFiles(files) {
   if (files.length === 0) return { changedCount: 0 }
-  const quoted = files.map((f) => `"${f}"`).join(' ')
-  const res = sh(`npx --no-install prettier --write ${quoted}`)
-  if (res.status !== 0 && !res.stdout) {
-    return { changedCount: 0, skipped: true }
-  }
+  if (!existsSync(PRETTIER_BIN)) return { changedCount: 0, skipped: true }
+  const res = spawnSync(
+    process.execPath,
+    [PRETTIER_BIN, '--write', ...files],
+    { cwd: ROOT, encoding: 'utf8' },
+  )
   const changedCount = (res.stdout || '')
     .split('\n')
     .filter((l) => l.trim() && !l.includes('(unchanged)'))
@@ -163,7 +167,7 @@ process.stdin.on('end', () => {
   const frontChanged = paths.some((p) => p.startsWith('front/'))
   if (!frontChanged) process.exit(0)
 
-  const { changedCount, skipped } = formatFiles(formatTargets(paths))
+  const { changedCount } = formatFiles(formatTargets(paths))
 
   const build = buildFront()
   if (!build.ok) {
@@ -179,9 +183,8 @@ process.stdin.on('end', () => {
   }
 
   if (changedCount > 0) {
-    const note = skipped ? '（prettier 未導入のため整形はスキップ）' : ''
     process.stderr.write(
-      `prettier で ${changedCount} 件整形・build OK。${note}` +
+      `prettier で ${changedCount} 件整形・build OK。` +
         '整形差分を含めて commit→push してください（push は自分で実行）。\n',
     )
     process.exit(2)
