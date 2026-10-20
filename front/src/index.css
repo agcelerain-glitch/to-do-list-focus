@@ -17,6 +17,9 @@
   --success: #10B981;
   --danger: #EF4444;
   --warning: #F59E0B;
+  --prio-high: #DC2626;
+  --prio-mid: #D97706;
+  --prio-low: #2563EB;
   --tab-h: 60px;
   --header-h: 56px;
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1225,6 +1228,10 @@ html, body, #root {
   --success: #D97706;
   --primary: #B45309;
   --primary-dark: #92400E;
+  /* 赤緑を避け 橙/グレー/青 の軸（形とラベルでも区別可） */
+  --prio-high: #C2410C;
+  --prio-mid: #6B7280;
+  --prio-low: #1D4ED8;
 }
 
 :root.color-deuteranopia .btn-complete { background: #FFFBEB; color: #D97706; }
@@ -1239,6 +1246,10 @@ html, body, #root {
   --danger: #7C3AED;
   --primary: #7C3AED;
   --primary-dark: #6D28D9;
+  /* 赤緑を避け 橙/グレー/青 の軸 */
+  --prio-high: #B45309;
+  --prio-mid: #6B7280;
+  --prio-low: #1D4ED8;
 }
 
 :root.color-protanopia .btn-delete { background: #F5F3FF; color: #7C3AED; }
@@ -1257,7 +1268,14 @@ html, body, #root {
   --surface: #FFFFFF;
   --success: #006600;
   --danger: #CC0000;
+  --prio-high: #CC0000;
+  --prio-mid: #000000;
+  --prio-low: #0000CC;
 }
+
+/* 高コントラスト: バッジは枠線＋太字で補強 */
+:root.color-highcontrast .priority-badge { border: 2px solid #000; font-weight: 800; }
+:root.color-highcontrast .priority-option { border: 2px solid #000; }
 
 :root.color-highcontrast .todo-item { border-bottom: 2px solid black; }
 :root.color-highcontrast .panel-create { background: #0000CC; }

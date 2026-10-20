@@ -22,6 +22,14 @@ export const translations = {
       submit: 'タスクを追加',
       submitting: '追加中...',
     },
+    priority: {
+      label: '優先度',
+      high: '高',
+      mid: '中',
+      low: '低',
+      none: '未設定',
+      aria: '優先度: {level}',
+    },
     list: {
       header: 'タスク一覧',
       pending: '未達',
@@ -106,6 +114,14 @@ export const translations = {
       submit: 'Add Task',
       submitting: 'Adding...',
     },
+    priority: {
+      label: 'Priority',
+      high: 'High',
+      mid: 'Mid',
+      low: 'Low',
+      none: 'None',
+      aria: 'Priority: {level}',
+    },
     list: {
       header: 'Task List',
       pending: 'Pending',
@@ -189,6 +205,14 @@ export const translations = {
       contentPh: '添加详情（可选）',
       submit: '添加任务',
       submitting: '添加中...',
+    },
+    priority: {
+      label: '优先级',
+      high: '高',
+      mid: '中',
+      low: '低',
+      none: '未设置',
+      aria: '优先级: {level}',
     },
     list: {
       header: '任务列表',
