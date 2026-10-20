@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAppContext } from '../contexts/AppContext'
+import PrioritySelector from './PrioritySelector'
 
 export default function TodoEditModal({ todo, onClose, onSave }) {
   const { t } = useAppContext()
@@ -7,6 +8,7 @@ export default function TodoEditModal({ todo, onClose, onSave }) {
 
   const [title, setTitle] = useState(todo.title)
   const [content, setContent] = useState(todo.content || '')
+  const [priority, setPriority] = useState(todo.priority ?? null)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function TodoEditModal({ todo, onClose, onSave }) {
   const handleSave = async () => {
     if (!title.trim() || saving) return
     setSaving(true)
-    await onSave(todo.id, title.trim(), content.trim())
+    await onSave(todo.id, title.trim(), content.trim(), priority)
     setSaving(false)
     onClose()
   }
@@ -50,6 +52,9 @@ export default function TodoEditModal({ todo, onClose, onSave }) {
             maxLength={100}
             autoFocus
           />
+
+          <label className="edit-label">{t.priority.label}</label>
+          <PrioritySelector value={priority} onChange={setPriority} />
 
           <label className="edit-label">{e.contentLabel}</label>
           <textarea

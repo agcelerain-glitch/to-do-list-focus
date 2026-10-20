@@ -1,20 +1,23 @@
 import { useState } from 'react'
 import { useAppContext } from '../contexts/AppContext'
+import PrioritySelector from './PrioritySelector'
 
 export default function CreatePanel({ onBack, onAdd }) {
   const { t } = useAppContext()
   const c = t.create
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [priority, setPriority] = useState(null)
   const [submitting, setSubmitting] = useState(false)
 
   const handleSubmit = async () => {
     if (!title.trim() || submitting) return
     setSubmitting(true)
     try {
-      await onAdd(title.trim(), content.trim())
+      await onAdd(title.trim(), content.trim(), priority)
       setTitle('')
       setContent('')
+      setPriority(null)
     } finally {
       setSubmitting(false)
     }
@@ -46,6 +49,11 @@ export default function CreatePanel({ onBack, onAdd }) {
               maxLength={100}
               autoComplete="off"
             />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">{t.priority.label}</label>
+            <PrioritySelector value={priority} onChange={setPriority} />
           </div>
 
           <div className="form-group">

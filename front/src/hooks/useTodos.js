@@ -19,10 +19,11 @@ export function useTodos(userId) {
     })
   }, [userId])
 
-  const add = (title, content) =>
+  const add = (title, content, priority = null) =>
     addDoc(collection(db, 'users', userId, 'todos'), {
       title,
       content,
+      priority,
       completed: false,
       createdAt: serverTimestamp(),
       completedAt: null,
@@ -40,10 +41,11 @@ export function useTodos(userId) {
       completedAt: null,
     })
 
-  const update = (id, title, content) =>
+  const update = (id, title, content, priority = null) =>
     updateDoc(doc(db, 'users', userId, 'todos', id), {
       title,
       content,
+      priority,
       createdAt: serverTimestamp(),
     })
 

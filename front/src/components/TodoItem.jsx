@@ -1,4 +1,5 @@
 import { useAppContext } from '../contexts/AppContext'
+import { PRIORITY_ICON } from '../constants/priority'
 
 function formatDate(ts) {
   if (!ts) return ''
@@ -13,6 +14,7 @@ function formatDate(ts) {
 
 export default function TodoItem({ todo, onComplete, onRevive, onRemove, onTap, onEdit }) {
   const { t } = useAppContext()
+  const p = t.priority
 
   return (
     <div className={`todo-item${todo.completed ? ' completed' : ''}`}>
@@ -24,7 +26,18 @@ export default function TodoItem({ todo, onComplete, onRevive, onRemove, onTap, 
         onKeyDown={e => e.key === 'Enter' && onTap && onTap(todo)}
         aria-label={`${todo.title} の詳細を表示`}
       >
-        <div className="todo-item-title">{todo.title}</div>
+        <div className="todo-item-title">
+          {todo.priority && (
+            <span
+              className={`priority-badge prio-${todo.priority}`}
+              aria-label={p.aria.replace('{level}', p[todo.priority])}
+            >
+              <i className={`fa-solid ${PRIORITY_ICON[todo.priority]}`} aria-hidden="true" />
+              {p[todo.priority]}
+            </span>
+          )}
+          {todo.title}
+        </div>
         {todo.content && (
           <div className="todo-item-body">{todo.content}</div>
         )}

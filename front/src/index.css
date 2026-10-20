@@ -478,6 +478,60 @@ html, body, #root {
 
 .todo-item.completed .todo-item-title { text-decoration: line-through; color: var(--muted); }
 
+/* ── 優先度バッジ（タイトル左に inline 表示） ── */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-right: 6px;
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.5;
+  vertical-align: middle;
+  color: #fff;
+  white-space: nowrap;
+}
+.priority-badge .fa-solid { font-size: 10px; }
+.priority-badge.prio-high { background: var(--prio-high); }
+.priority-badge.prio-mid  { background: var(--prio-mid); }
+.priority-badge.prio-low  { background: var(--prio-low); }
+/* 完了タスクでもバッジの打ち消し線は外し、色は維持 */
+.todo-item.completed .priority-badge { text-decoration: none; opacity: 0.9; }
+
+/* ── 優先度セレクタ（作成/編集パネル） ── */
+.priority-selector {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.priority-option {
+  flex: 1;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--subtext);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.priority-option .fa-solid { font-size: 15px; }
+.priority-option.prio-high { color: var(--prio-high); }
+.priority-option.prio-mid  { color: var(--prio-mid); }
+.priority-option.prio-low  { color: var(--prio-low); }
+.priority-option.selected.prio-high { background: var(--prio-high); border-color: var(--prio-high); color: #fff; }
+.priority-option.selected.prio-mid  { background: var(--prio-mid);  border-color: var(--prio-mid);  color: #fff; }
+.priority-option.selected.prio-low  { background: var(--prio-low);  border-color: var(--prio-low);  color: #fff; }
+
 .todo-item-body {
   font-size: 13px;
   color: var(--subtext);

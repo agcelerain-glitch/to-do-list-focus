@@ -3,6 +3,7 @@ import TodoItem from './TodoItem'
 import TodoDetailModal from './TodoDetailModal'
 import TodoEditModal from './TodoEditModal'
 import { useAppContext } from '../contexts/AppContext'
+import { priorityRank } from '../constants/priority'
 
 export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, onUpdate, listRef }) {
   const { t } = useAppContext()
@@ -14,7 +15,12 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
     setSelectedTodo(null)
     setEditingTodo(todo)
   }
-  const pending = todos.filter(todo => !todo.completed)
+  // 取得順(createdAt desc)を保ったまま優先度キーで安定ソート。
+  // 高→中→低→未設定の順。各グループ内は新しい順のまま。
+  const pending = todos
+    .filter(todo => !todo.completed)
+    .sort((a, b) => priorityRank(a.priority) - priorityRank(b.priority))
+  // 達成済みは完了日順(取得順)のまま。バッジのみ表示する。
   const completed = todos.filter(todo => todo.completed)
 
   return (
