@@ -707,6 +707,33 @@ html, body, #root {
 }
 .detail-edit-btn:active { background: var(--primary); color: white; }
 
+/* 詳細モーダル: 編集ボタン(左) と 優先度セレクタ(右) の左右2分割 */
+.detail-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  align-items: flex-end;
+}
+.detail-actions .detail-edit-btn {
+  margin-top: 0;
+  flex: 1 1 42%;
+  min-height: 44px;
+}
+.detail-priority-group {
+  flex: 1 1 58%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.detail-priority-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--subtext);
+}
+.detail-priority-group .priority-selector {
+  margin-top: 0;
+}
+
 /* ─── Edit button on todo item ─── */
 .btn-edit { background: #F1F5F9; color: #64748B; }
 .btn-edit:active { background: #E2E8F0; }

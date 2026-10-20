@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppContext } from '../contexts/AppContext'
+import PrioritySelector from './PrioritySelector'
 
 function formatDate(ts) {
   if (!ts) return ''
@@ -13,9 +14,16 @@ function formatDate(ts) {
   })
 }
 
-export default function TodoDetailModal({ todo, onClose, onEdit }) {
+export default function TodoDetailModal({ todo, onClose, onEdit, onSetPriority }) {
   const { t } = useAppContext()
   const d = t.detail
+
+  // 楽観的更新: タップで即 UI 反映しつつ Firestore も更新する。
+  const [priority, setPriorityState] = useState(todo.priority ?? null)
+  const handlePriority = next => {
+    setPriorityState(next)
+    onSetPriority && onSetPriority(todo.id, next)
+  }
 
   useEffect(() => {
     const handleKey = e => e.key === 'Escape' && onClose()
@@ -58,13 +66,19 @@ export default function TodoDetailModal({ todo, onClose, onEdit }) {
             )}
           </div>
           {!todo.completed && (
-            <button
-              className="detail-edit-btn"
-              onClick={() => { onClose(); onEdit && onEdit(todo) }}
-            >
-              <i className="fa-solid fa-pen" />
-              {d.edit}
-            </button>
+            <div className="detail-actions">
+              <button
+                className="detail-edit-btn"
+                onClick={() => { onClose(); onEdit && onEdit(todo) }}
+              >
+                <i className="fa-solid fa-pen" />
+                {d.edit}
+              </button>
+              <div className="detail-priority-group">
+                <span className="detail-priority-label">{t.priority.label}</span>
+                <PrioritySelector value={priority} onChange={handlePriority} />
+              </div>
+            </div>
           )}
         </div>
       </div>

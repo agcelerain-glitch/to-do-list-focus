@@ -5,7 +5,7 @@ import TodoEditModal from './TodoEditModal'
 import { useAppContext } from '../contexts/AppContext'
 import { priorityRank } from '../constants/priority'
 
-export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, onUpdate, listRef }) {
+export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove, onUpdate, onSetPriority, listRef }) {
   const { t } = useAppContext()
   const l = t.list
   const [selectedTodo, setSelectedTodo] = useState(null)
@@ -92,6 +92,7 @@ export default function TodoList({ todos, onBack, onComplete, onRevive, onRemove
           todo={selectedTodo}
           onClose={() => setSelectedTodo(null)}
           onEdit={openEdit}
+          onSetPriority={onSetPriority}
         />
       )}
       {editingTodo && (

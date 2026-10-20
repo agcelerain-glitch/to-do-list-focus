@@ -49,8 +49,13 @@ export function useTodos(userId) {
       createdAt: serverTimestamp(),
     })
 
+  // 優先度だけを即時更新する（title/content/createdAt は触らない）。
+  // 詳細モーダルからのワンタップ変更用。null で無印に戻す。
+  const setPriority = (id, priority) =>
+    updateDoc(doc(db, 'users', userId, 'todos', id), { priority })
+
   const remove = id =>
     deleteDoc(doc(db, 'users', userId, 'todos', id))
 
-  return { todos, add, complete, revive, update, remove }
+  return { todos, add, complete, revive, update, setPriority, remove }
 }

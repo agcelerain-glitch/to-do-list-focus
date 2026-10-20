@@ -14,7 +14,7 @@ export default function MainScreen({ user, onLogout }) {
   const touchStartY = useRef(null)
   const listAtTop = useRef(true)
   const listContainerRef = useRef(null)
-  const { todos, add, complete, revive, update, remove } = useTodos(user.uid)
+  const { todos, add, complete, revive, update, setPriority, remove } = useTodos(user.uid)
   const pendingCount = todos.filter(todo => !todo.completed).length
 
   const handleTouchStart = (e) => {
@@ -118,6 +118,7 @@ export default function MainScreen({ user, onLogout }) {
             onComplete={complete}
             onRevive={revive}
             onUpdate={update}
+            onSetPriority={setPriority}
             onRemove={remove}
             listRef={listContainerRef}
           />
