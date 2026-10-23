@@ -9,6 +9,7 @@ import {
   query,
   orderBy,
   serverTimestamp,
+  writeBatch,
 } from 'firebase/firestore'
 import { db } from '../firebase/config'
 
@@ -60,5 +61,19 @@ export function useTodos(userId) {
 
   const remove = id => deleteDoc(doc(db, 'users', userId, 'todos', id))
 
-  return { todos, add, complete, revive, update, setPriority, remove }
+  // 達成済みのタスクをまとめて削除する。writeBatch で 1 コミットにまとめる。
+  // Firestore のバッチ上限は 500 件なので、超える場合は分割してコミットする。
+  const removeCompleted = async () => {
+    const targets = todos.filter(todo => todo.completed)
+    if (targets.length === 0) return
+    for (let i = 0; i < targets.length; i += 500) {
+      const batch = writeBatch(db)
+      targets.slice(i, i + 500).forEach(todo => {
+        batch.delete(doc(db, 'users', userId, 'todos', todo.id))
+      })
+      await batch.commit()
+    }
+  }
+
+  return { todos, add, complete, revive, update, setPriority, remove, removeCompleted }
 }

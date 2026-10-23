@@ -11,6 +11,7 @@ export default function TodoList({
   onComplete,
   onRevive,
   onRemove,
+  onRemoveCompleted,
   onUpdate,
   onSetPriority,
   listRef,
@@ -23,6 +24,12 @@ export default function TodoList({
   const openEdit = todo => {
     setSelectedTodo(null)
     setEditingTodo(todo)
+  }
+
+  const handleClearCompleted = () => {
+    if (window.confirm(l.clearCompletedConfirm.replace('{n}', completed.length))) {
+      onRemoveCompleted?.()
+    }
   }
   // 取得順(createdAt desc)を保ったまま優先度キーで安定ソート。
   // 高→中→低→未設定の順。各グループ内は新しい順のまま。
@@ -80,6 +87,14 @@ export default function TodoList({
                 <i className="fa-solid fa-circle-check" style={{ color: '#10B981' }} />
                 {l.completed}
                 <span className="todo-count-badge">{completed.length}</span>
+                <button
+                  className="clear-completed-btn"
+                  onClick={handleClearCompleted}
+                  aria-label={l.clearCompleted}
+                >
+                  <i className="fa-solid fa-trash-can" />
+                  <span>{l.clearCompleted}</span>
+                </button>
               </div>
               {completed.map(todo => (
                 <TodoItem

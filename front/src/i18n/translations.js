@@ -36,6 +36,8 @@ export const translations = {
       completed: '達成済',
       emptyPending: '未達のタスクはありません',
       completedPrefix: '完了: ',
+      clearCompleted: '一括削除',
+      clearCompletedConfirm: '達成済のタスク {n} 件をすべて削除しますか？この操作は取り消せません。',
     },
     detail: {
       close: '閉じる',
@@ -128,6 +130,8 @@ export const translations = {
       completed: 'Completed',
       emptyPending: 'No pending tasks',
       completedPrefix: 'Done: ',
+      clearCompleted: 'Clear all',
+      clearCompletedConfirm: 'Delete all {n} completed tasks? This action cannot be undone.',
     },
     detail: {
       close: 'Close',
@@ -220,6 +224,8 @@ export const translations = {
       completed: '已完成',
       emptyPending: '没有待完成的任务',
       completedPrefix: '完成于: ',
+      clearCompleted: '批量删除',
+      clearCompletedConfirm: '确定要删除全部 {n} 个已完成的任务吗？此操作无法撤销。',
     },
     detail: {
       close: '关闭',
