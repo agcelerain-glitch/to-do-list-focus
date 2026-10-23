@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useAppContext } from '../contexts/AppContext'
-import { playSound, toggleMute, toggleVibrate } from '../lib/sound'
+import { toggleMute, toggleVibrate } from '../lib/sound'
 
 const LANGS = [
   { key: 'ja', label: '日本語' },
@@ -36,6 +36,50 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
   const [msg, setMsg] = useState('')
   const [fbStatus, setFbStatus] = useState('idle') // idle | sending | sent
   const [reloading, setReloading] = useState(false)
+
+  // アラーム試聴の再生/停止トグル。再生中のインスタンスを保持する。
+  const [playingAlarm, setPlayingAlarm] = useState(null)
+  const previewRef = useRef(null)
+
+  const stopPreview = () => {
+    if (previewRef.current) {
+      previewRef.current.pause()
+      previewRef.current.currentTime = 0
+      previewRef.current = null
+    }
+    setPlayingAlarm(null)
+  }
+
+  const togglePreview = key => {
+    // 同じ音を再生中にもう一度押したら停止
+    if (playingAlarm === key) {
+      stopPreview()
+      return
+    }
+    // 別の音が鳴っていれば止めてから再生
+    stopPreview()
+    const audio = new Audio(`/sounds/${key}.mp3`)
+    previewRef.current = audio
+    const clear = () => {
+      if (previewRef.current === audio) {
+        previewRef.current = null
+        setPlayingAlarm(null)
+      }
+    }
+    audio.onended = clear
+    audio.play().catch(clear)
+    setPlayingAlarm(key)
+  }
+
+  // パネルを閉じる/アンマウント時に試聴を止める
+  useEffect(() => {
+    return () => {
+      if (previewRef.current) {
+        previewRef.current.pause()
+        previewRef.current = null
+      }
+    }
+  }, [])
 
   const handleReload = async () => {
     setReloading(true)
@@ -185,11 +229,11 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
                     {s.sound[`alarm${i + 1}`]}
                   </button>
                   <button
-                    className="sound-preview-btn"
-                    onClick={() => playSound(key, { force: true })}
-                    aria-label={s.sound.preview}
+                    className={`sound-preview-btn${playingAlarm === key ? ' playing' : ''}`}
+                    onClick={() => togglePreview(key)}
+                    aria-label={playingAlarm === key ? s.sound.stop : s.sound.preview}
                   >
-                    <i className="fa-solid fa-play" />
+                    <i className={`fa-solid ${playingAlarm === key ? 'fa-stop' : 'fa-play'}`} />
                   </button>
                 </div>
               ))}
