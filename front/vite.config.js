@@ -18,7 +18,8 @@ export default defineConfig({
       manifest: {
         name: 'Todo List Focus',
         short_name: 'TodoFocus',
-        description: 'タスクをスマートに管理するWebアプリ。スワイプ操作でスムーズにタスクを追加・管理。',
+        description:
+          'タスクをスマートに管理するWebアプリ。スワイプ操作でスムーズにタスクを追加・管理。',
         theme_color: '#3B82F6',
         background_color: '#F8FAFC',
         display: 'standalone',

@@ -1858,8 +1858,7 @@ body,
 }
 .sound-radio.on {
   border-color: #3b82f6;
-  background:
-    radial-gradient(circle at center, #3b82f6 5px, transparent 6px);
+  background: radial-gradient(circle at center, #3b82f6 5px, transparent 6px);
 }
 .sound-preview-btn {
   width: 38px;

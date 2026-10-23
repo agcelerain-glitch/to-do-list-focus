@@ -37,7 +37,8 @@ export const translations = {
       emptyPending: '未達のタスクはありません',
       completedPrefix: '完了: ',
       clearCompleted: '一括削除',
-      clearCompletedConfirm: '達成済のタスク {n} 件をすべて削除しますか？この操作は取り消せません。',
+      clearCompletedConfirm:
+        '達成済のタスク {n} 件をすべて削除しますか？この操作は取り消せません。',
     },
     detail: {
       close: '閉じる',

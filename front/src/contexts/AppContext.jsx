@@ -12,9 +12,15 @@ export function AppProvider({ children }) {
     () => localStorage.getItem('colorMode') || 'normal',
   )
 
-  const [timerAlarm, setTimerAlarmState] = useState(() => localStorage.getItem('timerAlarm') || 'timer_alarm_01')
-  const [soundMuted, setSoundMutedState] = useState(() => localStorage.getItem('soundMuted') === '1')
-  const [vibrateEnabled, setVibrateEnabledState] = useState(() => localStorage.getItem('vibrateEnabled') !== '0')
+  const [timerAlarm, setTimerAlarmState] = useState(
+    () => localStorage.getItem('timerAlarm') || 'timer_alarm_01',
+  )
+  const [soundMuted, setSoundMutedState] = useState(
+    () => localStorage.getItem('soundMuted') === '1',
+  )
+  const [vibrateEnabled, setVibrateEnabledState] = useState(
+    () => localStorage.getItem('vibrateEnabled') !== '0',
+  )
 
   const setTimerAlarm = v => {
     setTimerAlarmState(v)

@@ -175,10 +175,7 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
             <label className="settings-label">{s.sound.alarm}</label>
             <div className="sound-alarm-list">
               {ALARMS.map((key, i) => (
-                <div
-                  key={key}
-                  className={`sound-alarm-row${timerAlarm === key ? ' active' : ''}`}
-                >
+                <div key={key} className={`sound-alarm-row${timerAlarm === key ? ' active' : ''}`}>
                   <button
                     className="sound-alarm-select"
                     onClick={() => setTimerAlarm(key)}
