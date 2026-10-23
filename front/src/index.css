@@ -1859,11 +1859,14 @@ body,
 .sound-radio.on {
   border-color: #3b82f6;
   background:
-    radial-gradient(circle at center, #3b82f6 0 5px, transparent 6px);
+    radial-gradient(circle at center, #3b82f6 5px, transparent 6px);
 }
 .sound-preview-btn {
   width: 38px;
   height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface);

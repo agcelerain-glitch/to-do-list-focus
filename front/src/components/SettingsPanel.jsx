@@ -179,7 +179,11 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
                   key={key}
                   className={`sound-alarm-row${timerAlarm === key ? ' active' : ''}`}
                 >
-                  <button className="sound-alarm-select" onClick={() => setTimerAlarm(key)}>
+                  <button
+                    className="sound-alarm-select"
+                    onClick={() => setTimerAlarm(key)}
+                    aria-pressed={timerAlarm === key}
+                  >
                     <span className={`sound-radio${timerAlarm === key ? ' on' : ''}`} />
                     {s.sound[`alarm${i + 1}`]}
                   </button>
