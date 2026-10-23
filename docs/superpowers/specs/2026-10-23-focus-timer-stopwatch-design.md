@@ -47,9 +47,12 @@
 
 ### 3.2 サウンド設定（AppContext 経由、既存 lang/colorMode と同じ永続パターン）
 ```
-localStorage.timerAlarm = 'timer_alarm_01' | 'timer_alarm_02' | 'timer_alarm_03' | 'timer_alarm_04'  // 既定: 'timer_alarm_01'
-localStorage.soundMuted = '0' | '1'   // 既定: '0'（ミュートOFF）
+localStorage.timerAlarm     = 'timer_alarm_01' | 'timer_alarm_02' | 'timer_alarm_03' | 'timer_alarm_04'  // 既定: 'timer_alarm_01'
+localStorage.soundMuted      = '0' | '1'   // 既定: '0'（ミュートOFF）
+localStorage.vibrateEnabled  = '0' | '1'   // 既定: '1'（バイブON）
 ```
+
+これら3値はすべて AppContext の単一状態として保持し、設定ページ・フォーカスページの双方のトグルは同じ状態を読み書きする（＝どちらで切り替えても即同期。robust な単一の真実源）。
 
 ## 4. 音声ファイル（`front/public/sounds/`）
 
@@ -71,12 +74,15 @@ localStorage.soundMuted = '0' | '1'   // 既定: '0'（ミュートOFF）
 - タイマー「開始」ボタン押下（ユーザー操作）時に、選択中アラームの `Audio` オブジェクトを生成し一度 `play()` → 即 `pause()` + `currentTime=0` で解錠しておく。タイマー終了時（コールバック）に同インスタンスを本再生する。
 - 試聴・操作音は常にユーザー操作起点なので制約なし。
 
-### 5.2 再生ルール（`soundMuted==='1'` のときは鳴らさない。例外は設定画面の試聴＝7.3）
-- タイマー `finished` 遷移時：選択アラームを再生（ループせず1回）＋ `navigator.vibrate?.([400,200,400])`（非対応端末は無視）＋ 画面アラート表示。
+### 5.2 再生ルール
+音（`soundMuted==='1'` のときは鳴らさない。例外は設定画面の試聴＝7.3）／ バイブ（`vibrateEnabled==='1'` かつ `navigator.vibrate` 対応時のみ）。音とバイブは独立に制御する。
+
+- タイマー `finished` 遷移時：選択アラームを再生（ループせず1回）＋ `navigator.vibrate?.([400,200,400])`＋ 画面アラート表示。
 - ストップウォッチ開始：`stopwatch_button.mp3`
 - タイマー開始：`timer_button.mp3`
 - リセット：`reset_01.mp3`
 - ミュート解除（`soundMuted` を `1→0`）：`reset_01.mp3` を鳴らす（「音が戻った」聴覚フィードバック）。ミュート有効化（`0→1`）時は無音。
+- バイブ有効化（`vibrateEnabled` を `0→1`）：短い確認バイブ `navigator.vibrate?.(80)` を1回（「バイブが戻った」触覚フィードバック。ミュート解除音と対になる挙動）。無効化（`1→0`）時は何もしない。
 
 ### 5.3 共通ユーティリティ
 - `playSound(file)` ヘルパ（`soundMuted` を参照、ミュート時は何もしない）を 1 箇所に実装。アラーム本再生／解錠だけは専用インスタンスを使う。
@@ -107,7 +113,7 @@ const {
 ### 7.1 FocusMode 改修（`front/src/components/FocusMode.jsx`）
 現在の「タスク選択専用」から「計測＋任意タスク連携」画面へ作り変える。
 
-- 上部：モード切替セグメント **[ ストップウォッチ | タイマー ]**、右端にミュート即時トグル（🔔/🔕 `soundMuted` と連動、5.2 のフィードバック音）。
+- 上部：モード切替セグメント **[ ストップウォッチ | タイマー ]**、右端にクイックトグル2つ — ミュート（🔔/🔕 `soundMuted`、5.2 のフィードバック音）とバイブ（📳/🚫 `vibrateEnabled`、5.2 のフィードバックバイブ）。どちらも AppContext の状態を直接読み書きし、設定ページと即同期する。
 - 中央：大きな時間表示。`MM:SS`、1時間以上は `H:MM:SS`。タイマー時は残り時間、ストップウォッチ時は経過時間。
 - 時間表示の下：**「タスクにひも付ける（任意）」**。未達タスク一覧から選択（既存の集中フローを統合）。連携中はタスク名を表示し解除も可能。
 - タイマーの `idle` 時：プリセット chip **5 / 10 / 15 / 25 / 30 / 45 / 60 分**（選ぶと `durationMs` 設定）。
@@ -119,11 +125,12 @@ const {
 
 ### 7.3 設定ページ（`front/src/components/SettingsPanel.jsx`）に新セクション「サウンド」
 - マスターのミュート切替（`soundMuted`、5.2 のフィードバック音）。
+- バイブ切替（`vibrateEnabled`、5.2 のフィードバックバイブ）。iOS Web では `navigator.vibrate` 非対応のため実質 no-op になる旨を注記（`settings.sound.vibrateNote`）。
 - アラーム音のラジオ選択「アラーム1〜4」。各行に試聴ボタン（▶、押下で該当 mp3 を再生。ミュート中でも試聴は鳴らす＝設定確認のため）。
 - 言語・色覚設定セクションと同じ見た目に合わせる。
 
 ### 7.4 AppContext（`front/src/contexts/AppContext.jsx`）
-- `timerAlarm` / `setTimerAlarm`、`soundMuted` / `setSoundMuted` を追加（既存 lang/colorMode と同じ localStorage 永続パターン）。
+- `timerAlarm` / `setTimerAlarm`、`soundMuted` / `setSoundMuted`、`vibrateEnabled` / `setVibrateEnabled` を追加（既存 lang/colorMode と同じ localStorage 永続パターン）。設定・フォーカス双方のトグルがこの状態を共有することで同期を保証する。
 
 ## 8. i18n（`front/src/i18n/translations.js`、ja/en/zh 全てに追加）
 `timer` セクション（例）:
@@ -135,8 +142,9 @@ const {
 - `running`（計測中）, `done`（終了）
 
 `settings.sound` セクション:
-- `title`（サウンド）, `mute`（ミュート）, `alarm`（アラーム音）
+- `title`（サウンド）, `mute`（ミュート）, `vibrate`（バイブ）, `alarm`（アラーム音）
 - `alarm1..alarm4`（アラーム1〜4）, `preview`（試聴）
+- `vibrateNote`（※ iOS など一部環境ではバイブ非対応）
 
 ## 9. CSS（`front/src/index.css`）
 - 既存 `.focus-*` に倣い `.timer-*`（モード切替、時間表示、プリセット chip、操作ボタン、finished アラート、ミュートトグル）を追加。
@@ -159,8 +167,10 @@ const {
 ```
 - `globPatterns` に mp3 は追加しない（大容量アラームをプリキャッシュで肥大化させない。初回再生時にランタイムキャッシュされ、以降オフライン可）。
 
-## 11. エッジケース / エラー処理
-- `navigator.vibrate` 非対応：`?.` でスキップ。
+## 11. エッジケース / エラー処理・プラットフォーム制約
+- **システムのマナー/サイレントモード**：Web からは読み取り・上書き不可。挙動は OS 任せ（Android はメディア音量/DND に従う、iOS はミュートスイッチと Web 音声の関係が不安定）。アプリ内ミュートはそれとは独立した追加スイッチ。
+- **バイブのプラットフォーム差**：`navigator.vibrate` は iOS Safari 非対応（Web ではバイブ不可）。Android でも DND により抑制されうる。`vibrateEnabled` が ON でも非対応環境では no-op。`?.` でスキップし例外にしない。
+- **バックグラウンド/ロック中のアラーム**：壁時計で経過/残りは正確だが、0秒ちょうどでの鳴動は Web では保証されない（タブのスロットル／iOS ロック中は不可）。復帰時に `finished` 表示を出す（復元時に音は鳴らさない）。背面通知の補強は今回スコープ外（4択で「入れない」を選択）。
 - mp3 読み込み失敗（オフライン初回など）：`play()` の reject を握りつぶし、バイブ＋画面表示は実行。
 - 復元時に timer が既に 0 を過ぎている：`finished` 表示のみ（音は鳴らさない）。
 - タイマー 0 分や未設定で開始しようとした場合：開始ボタンを無効化（`durationMs>0` 必須）。
