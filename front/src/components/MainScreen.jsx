@@ -5,6 +5,8 @@ import SettingsPanel from './SettingsPanel'
 import FocusMode from './FocusMode'
 import { useTodos } from '../hooks/useTodos'
 import { useAppContext } from '../contexts/AppContext'
+import { useTimer } from '../hooks/useTimer'
+import TimerChip from './TimerChip'
 
 export default function MainScreen({ user, onLogout }) {
   const { t } = useAppContext()
@@ -17,6 +19,7 @@ export default function MainScreen({ user, onLogout }) {
   const { todos, add, complete, revive, update, setPriority, remove, removeCompleted } = useTodos(
     user.uid,
   )
+  const timer = useTimer({ onCompleteTask: complete })
   const pendingCount = todos.filter(todo => !todo.completed).length
 
   const handleTouchStart = e => {
@@ -137,16 +140,8 @@ export default function MainScreen({ user, onLogout }) {
       {settingsOpen && (
         <SettingsPanel user={user} onClose={() => setSettingsOpen(false)} onLogout={onLogout} />
       )}
-      {focusOpen && (
-        <FocusMode
-          todos={todos}
-          onClose={() => setFocusOpen(false)}
-          onComplete={async id => {
-            await complete(id)
-            setFocusOpen(false)
-          }}
-        />
-      )}
+      {focusOpen && <FocusMode timer={timer} todos={todos} onClose={() => setFocusOpen(false)} />}
+      {!focusOpen && <TimerChip timer={timer} onOpen={() => setFocusOpen(true)} />}
     </div>
   )
 }
