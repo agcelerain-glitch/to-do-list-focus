@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAppContext } from '../contexts/AppContext'
+import { playSound, toggleMute, toggleVibrate } from '../lib/sound'
 
 const LANGS = [
   { key: 'ja', label: '日本語' },
@@ -14,8 +15,22 @@ const COLOR_MODES = [
   { key: 'highcontrast', dot: '#0000CC' },
 ]
 
+const ALARMS = ['timer_alarm_01', 'timer_alarm_02', 'timer_alarm_03', 'timer_alarm_04']
+
 export default function SettingsPanel({ user, onClose, onLogout }) {
-  const { t, lang, setLang, colorMode, setColorMode } = useAppContext()
+  const {
+    t,
+    lang,
+    setLang,
+    colorMode,
+    setColorMode,
+    timerAlarm,
+    setTimerAlarm,
+    soundMuted,
+    setSoundMuted,
+    vibrateEnabled,
+    setVibrateEnabled,
+  } = useAppContext()
   const s = t.settings
 
   const [msg, setMsg] = useState('')
@@ -121,6 +136,63 @@ export default function SettingsPanel({ user, onClose, onLogout }) {
                 {fbStatus === 'sending' ? s.feedback.sending : s.feedback.submit}
               </button>
             )}
+          </div>
+
+          {/* ── Sound ── */}
+          <div className="settings-section">
+            <div className="settings-section-title">
+              <i className="fa-solid fa-volume-high" />
+              {s.sound.title}
+            </div>
+
+            <div className="sound-toggle-row">
+              <span>{s.sound.mute}</span>
+              <button
+                className={`sound-switch${soundMuted ? ' on' : ''}`}
+                onClick={() => toggleMute(soundMuted, setSoundMuted)}
+                role="switch"
+                aria-checked={soundMuted}
+                aria-label={s.sound.mute}
+              >
+                <span className="sound-switch-knob" />
+              </button>
+            </div>
+
+            <div className="sound-toggle-row">
+              <span>{s.sound.vibrate}</span>
+              <button
+                className={`sound-switch${vibrateEnabled ? ' on' : ''}`}
+                onClick={() => toggleVibrate(vibrateEnabled, setVibrateEnabled)}
+                role="switch"
+                aria-checked={vibrateEnabled}
+                aria-label={s.sound.vibrate}
+              >
+                <span className="sound-switch-knob" />
+              </button>
+            </div>
+            <p className="settings-note">{s.sound.vibrateNote}</p>
+
+            <label className="settings-label">{s.sound.alarm}</label>
+            <div className="sound-alarm-list">
+              {ALARMS.map((key, i) => (
+                <div
+                  key={key}
+                  className={`sound-alarm-row${timerAlarm === key ? ' active' : ''}`}
+                >
+                  <button className="sound-alarm-select" onClick={() => setTimerAlarm(key)}>
+                    <span className={`sound-radio${timerAlarm === key ? ' on' : ''}`} />
+                    {s.sound[`alarm${i + 1}`]}
+                  </button>
+                  <button
+                    className="sound-preview-btn"
+                    onClick={() => playSound(key, { force: true })}
+                    aria-label={s.sound.preview}
+                  >
+                    <i className="fa-solid fa-play" />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* ── Language ── */}
