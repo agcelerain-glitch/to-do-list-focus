@@ -44,6 +44,7 @@ export function useTimer({ onCompleteTask } = {}) {
   const [state, setState] = useState(load)
   const [now, setNow] = useState(() => Date.now())
   const alarmRef = useRef(null)
+  const finishedRef = useRef(false)
 
   // tick コールバックから最新設定を参照するための ref
   const mutedRef = useRef(soundMuted)
@@ -88,6 +89,8 @@ export function useTimer({ onCompleteTask } = {}) {
   useEffect(() => {
     if (state.status !== 'running' || state.mode !== 'timer' || state.durationMs == null) return
     if (elapsedOf(state, now) >= state.durationMs) {
+      if (finishedRef.current) return
+      finishedRef.current = true
       setState(s => ({ ...s, status: 'finished', accumulatedMs: s.durationMs, startedAt: null }))
       if (!mutedRef.current && alarmRef.current) alarmRef.current.play()
       vibrate([400, 200, 400], { enabled: vibRef.current })
@@ -97,6 +100,7 @@ export function useTimer({ onCompleteTask } = {}) {
 
   const start = useCallback(
     (mode, { durationMs = null, taskId = null, taskTitle = null } = {}) => {
+      finishedRef.current = false
       if (mode === 'timer') {
         if (!durationMs || durationMs <= 0) return
         alarmRef.current = createAlarm(timerAlarm)
@@ -133,12 +137,14 @@ export function useTimer({ onCompleteTask } = {}) {
   }, [])
 
   const reset = useCallback(() => {
+    finishedRef.current = false
     if (alarmRef.current) alarmRef.current.stop()
     playSound('reset_01', { muted: soundMuted })
     setState(s => ({ ...initialState, mode: s.mode }))
   }, [soundMuted])
 
   const stopFinished = useCallback(() => {
+    finishedRef.current = false
     if (alarmRef.current) alarmRef.current.stop()
     setState(s => ({ ...initialState, mode: s.mode }))
   }, [])
@@ -152,6 +158,7 @@ export function useTimer({ onCompleteTask } = {}) {
   }, [])
 
   const completeLinkedTask = useCallback(async () => {
+    finishedRef.current = false
     const id = state.taskId
     if (!id) return
     if (alarmRef.current) alarmRef.current.stop()
