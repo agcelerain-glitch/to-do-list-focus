@@ -12,6 +12,25 @@ export function AppProvider({ children }) {
     () => localStorage.getItem('colorMode') || 'normal',
   )
 
+  const [timerAlarm, setTimerAlarmState] = useState(() => localStorage.getItem('timerAlarm') || 'timer_alarm_01')
+  const [soundMuted, setSoundMutedState] = useState(() => localStorage.getItem('soundMuted') === '1')
+  const [vibrateEnabled, setVibrateEnabledState] = useState(() => localStorage.getItem('vibrateEnabled') !== '0')
+
+  const setTimerAlarm = v => {
+    setTimerAlarmState(v)
+    localStorage.setItem('timerAlarm', v)
+  }
+
+  const setSoundMuted = v => {
+    setSoundMutedState(v)
+    localStorage.setItem('soundMuted', v ? '1' : '0')
+  }
+
+  const setVibrateEnabled = v => {
+    setVibrateEnabledState(v)
+    localStorage.setItem('vibrateEnabled', v ? '1' : '0')
+  }
+
   const setLang = l => {
     setLangState(l)
     localStorage.setItem('lang', l)
@@ -33,7 +52,21 @@ export function AppProvider({ children }) {
   const t = translations[lang] ?? translations.ja
 
   return (
-    <AppContext.Provider value={{ lang, setLang, t, colorMode, setColorMode }}>
+    <AppContext.Provider
+      value={{
+        lang,
+        setLang,
+        t,
+        colorMode,
+        setColorMode,
+        timerAlarm,
+        setTimerAlarm,
+        soundMuted,
+        setSoundMuted,
+        vibrateEnabled,
+        setVibrateEnabled,
+      }}
+    >
       {children}
     </AppContext.Provider>
   )
