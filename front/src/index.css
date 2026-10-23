@@ -569,7 +569,7 @@ body,
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
-  color: #ef4444;
+  color: var(--danger);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -581,7 +581,7 @@ body,
 }
 .clear-completed-btn:active {
   background: rgba(239, 68, 68, 0.08);
-  border-color: #ef4444;
+  border-color: var(--danger);
 }
 .clear-completed-btn i {
   font-size: 11px;
@@ -1618,7 +1618,7 @@ body,
   margin-bottom: 32px;
   border-radius: 16px;
   border: none;
-  background: #3b82f6;
+  background: var(--primary);
   color: white;
   font-size: 18px;
   font-weight: 800;
@@ -1803,7 +1803,7 @@ body,
   cursor: pointer;
 }
 .sound-switch.on {
-  background: #3b82f6;
+  background: var(--primary);
 }
 .sound-switch-knob {
   position: absolute;
@@ -1834,7 +1834,7 @@ body,
   background: var(--surface);
 }
 .sound-alarm-row.active {
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }
 .sound-alarm-select {
   flex: 1;
@@ -1857,8 +1857,8 @@ body,
   flex-shrink: 0;
 }
 .sound-radio.on {
-  border-color: #3b82f6;
-  background: radial-gradient(circle at center, #3b82f6 5px, transparent 6px);
+  border-color: var(--primary);
+  background: radial-gradient(circle at center, var(--primary) 5px, transparent 6px);
 }
 .sound-preview-btn {
   width: 38px;
@@ -1869,7 +1869,7 @@ body,
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface);
-  color: #3b82f6;
+  color: var(--primary);
   cursor: pointer;
 }
 
@@ -1886,7 +1886,7 @@ body,
   padding: 10px 18px;
   border-radius: 999px;
   border: none;
-  background: #3b82f6;
+  background: var(--primary);
   color: #fff;
   font-size: 15px;
   font-weight: 800;
@@ -1895,7 +1895,7 @@ body,
   cursor: pointer;
 }
 .timer-chip.finished {
-  background: #ef4444;
+  background: var(--danger);
   animation: timer-blink 1s steps(2, start) infinite;
 }
 .timer-chip-sub {
@@ -1919,6 +1919,49 @@ body,
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.timer-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.timer-custom {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.timer-custom-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.timer-custom-field input {
+  width: 64px;
+  padding: 10px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: inherit;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+}
+.timer-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 .timer-quick-toggles {
   display: flex;
@@ -1957,7 +2000,7 @@ body,
   cursor: pointer;
 }
 .timer-mode-btn.active {
-  background: #3b82f6;
+  background: var(--primary);
   color: #fff;
 }
 .timer-mode-btn:disabled {
@@ -1973,7 +2016,7 @@ body,
   margin: 12px 0;
 }
 .timer-display.finished {
-  color: #ef4444;
+  color: var(--danger);
   animation: timer-blink 1s steps(2, start) infinite;
 }
 @keyframes timer-blink {
@@ -1984,7 +2027,7 @@ body,
 .timer-finished-label {
   font-size: 16px;
   font-weight: 700;
-  color: #ef4444;
+  color: var(--danger);
   margin-bottom: 8px;
 }
 .timer-presets {
@@ -2005,9 +2048,9 @@ body,
   cursor: pointer;
 }
 .timer-preset-chip.active {
-  background: #3b82f6;
+  background: var(--primary);
   color: #fff;
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }
 .timer-task-area {
   margin-bottom: 20px;
@@ -2045,7 +2088,7 @@ body,
 .timer-task-clear {
   background: none;
   border: none;
-  color: #ef4444;
+  color: var(--danger);
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -2069,9 +2112,9 @@ body,
   cursor: pointer;
 }
 .timer-btn.primary {
-  background: #3b82f6;
+  background: var(--primary);
   color: #fff;
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }
 .timer-btn.ghost {
   color: var(--muted);
@@ -2084,7 +2127,7 @@ body,
   padding: 12px 22px;
   border-radius: 12px;
   border: none;
-  background: #10b981;
+  background: var(--success);
   color: #fff;
   font-size: 15px;
   font-weight: 700;

@@ -10,19 +10,34 @@ export default function FocusMode({ timer, todos, onClose }) {
   const tm = t.timer
   const [picking, setPicking] = useState(false)
   const [presetMin, setPresetMin] = useState(25)
+  const [custom, setCustom] = useState(false)
+  const [customH, setCustomH] = useState(0)
+  const [customM, setCustomM] = useState(25)
+  const [customS, setCustomS] = useState(0)
 
   const pending = todos.filter(todo => !todo.completed)
   const isTimer = timer.mode === 'timer'
   const idle = timer.status === 'idle'
   const linkedAlive = !!timer.taskId && todos.some(td => td.id === timer.taskId && !td.completed)
 
-  // 表示値: タイマーidleはプリセット、以降は残り/経過
-  const displayMs = isTimer ? (idle ? presetMin * 60 * 1000 : timer.remainingMs) : timer.elapsedMs
+  // 設定時間(ms): カスタム時は時分秒、通常はプリセット分
+  const inputMs = custom ? (customH * 3600 + customM * 60 + customS) * 1000 : presetMin * 60 * 1000
+  // 表示値: タイマーidleは設定時間、以降は残り/経過
+  const displayMs = isTimer ? (idle ? inputMs : timer.remainingMs) : timer.elapsedMs
+  const canStart = !isTimer || inputMs > 0
+
+  // 数値入力を 0〜max にクランプ（空欄は0扱い）
+  const clampInt = (v, max) => {
+    const n = parseInt(v, 10)
+    if (Number.isNaN(n)) return 0
+    return Math.min(Math.max(n, 0), max)
+  }
 
   const handleStart = () => {
     if (isTimer) {
+      if (inputMs <= 0) return
       timer.start('timer', {
-        durationMs: presetMin * 60 * 1000,
+        durationMs: inputMs,
         taskId: timer.taskId,
         taskTitle: timer.taskTitle,
       })
@@ -36,8 +51,9 @@ export default function FocusMode({ timer, todos, onClose }) {
       <div className="timer-screen">
         {/* ヘッダー: 閉じる + クイックトグル */}
         <div className="timer-header">
-          <button className="focus-close-btn" onClick={onClose} aria-label="閉じる">
-            <i className="fa-solid fa-xmark" />
+          <button className="timer-back-btn" onClick={onClose} aria-label={tm.back}>
+            <i className="fa-solid fa-arrow-left" />
+            <span>{tm.back}</span>
           </button>
           <div className="timer-quick-toggles">
             <button
@@ -81,19 +97,64 @@ export default function FocusMode({ timer, todos, onClose }) {
         </div>
         {timer.status === 'finished' && <div className="timer-finished-label">{tm.finished}</div>}
 
-        {/* タイマーidle時: プリセット */}
+        {/* タイマーidle時: プリセット + カスタム */}
         {isTimer && idle && (
-          <div className="timer-presets">
-            {PRESETS.map(min => (
+          <>
+            <div className="timer-presets">
+              {PRESETS.map(min => (
+                <button
+                  key={min}
+                  className={`timer-preset-chip${!custom && presetMin === min ? ' active' : ''}`}
+                  onClick={() => {
+                    setCustom(false)
+                    setPresetMin(min)
+                  }}
+                >
+                  {tm.presetMin.replace('{n}', String(min))}
+                </button>
+              ))}
               <button
-                key={min}
-                className={`timer-preset-chip${presetMin === min ? ' active' : ''}`}
-                onClick={() => setPresetMin(min)}
+                className={`timer-preset-chip${custom ? ' active' : ''}`}
+                onClick={() => setCustom(true)}
               >
-                {tm.presetMin.replace('{n}', String(min))}
+                {tm.custom}
               </button>
-            ))}
-          </div>
+            </div>
+            {custom && (
+              <div className="timer-custom">
+                <label className="timer-custom-field">
+                  <input
+                    type="number"
+                    min="0"
+                    max="23"
+                    value={customH}
+                    onChange={e => setCustomH(clampInt(e.target.value, 23))}
+                  />
+                  <span>{tm.hours}</span>
+                </label>
+                <label className="timer-custom-field">
+                  <input
+                    type="number"
+                    min="0"
+                    max="59"
+                    value={customM}
+                    onChange={e => setCustomM(clampInt(e.target.value, 59))}
+                  />
+                  <span>{tm.minutes}</span>
+                </label>
+                <label className="timer-custom-field">
+                  <input
+                    type="number"
+                    min="0"
+                    max="59"
+                    value={customS}
+                    onChange={e => setCustomS(clampInt(e.target.value, 59))}
+                  />
+                  <span>{tm.seconds}</span>
+                </label>
+              </div>
+            )}
+          </>
         )}
 
         {/* タスク連携 */}
@@ -116,7 +177,7 @@ export default function FocusMode({ timer, todos, onClose }) {
         {/* 操作 */}
         <div className="timer-controls">
           {idle && (
-            <button className="timer-btn primary" onClick={handleStart}>
+            <button className="timer-btn primary" onClick={handleStart} disabled={!canStart}>
               <i className="fa-solid fa-play" /> {tm.start}
             </button>
           )}
