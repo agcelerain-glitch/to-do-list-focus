@@ -14,6 +14,7 @@ export default function FocusMode({ timer, todos, onClose }) {
   const pending = todos.filter(todo => !todo.completed)
   const isTimer = timer.mode === 'timer'
   const idle = timer.status === 'idle'
+  const linkedAlive = !!timer.taskId && todos.some(td => td.id === timer.taskId && !td.completed)
 
   // 表示値: タイマーidleはプリセット、以降は残り/経過
   const displayMs = isTimer ? (idle ? presetMin * 60 * 1000 : timer.remainingMs) : timer.elapsedMs
@@ -89,7 +90,7 @@ export default function FocusMode({ timer, todos, onClose }) {
                 className={`timer-preset-chip${presetMin === min ? ' active' : ''}`}
                 onClick={() => setPresetMin(min)}
               >
-                {tm.presetMin.replace('{n}', min)}
+                {tm.presetMin.replace('{n}', String(min))}
               </button>
             ))}
           </div>
@@ -148,7 +149,11 @@ export default function FocusMode({ timer, todos, onClose }) {
 
         {/* タスク完了（連携あり & idle以外） */}
         {timer.taskId && !idle && (
-          <button className="timer-complete-btn" onClick={timer.completeLinkedTask}>
+          <button
+            className="timer-complete-btn"
+            onClick={timer.completeLinkedTask}
+            disabled={!linkedAlive}
+          >
             <i className="fa-solid fa-check" /> {tm.completeTask}
           </button>
         )}

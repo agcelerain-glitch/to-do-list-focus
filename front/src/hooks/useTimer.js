@@ -162,7 +162,11 @@ export function useTimer({ onCompleteTask } = {}) {
     const id = state.taskId
     if (!id) return
     if (alarmRef.current) alarmRef.current.stop()
-    if (onCompleteTask) await onCompleteTask(id)
+    try {
+      if (onCompleteTask) await onCompleteTask(id)
+    } catch {
+      // タスクが既に削除/完了済みでも計測はリセットする
+    }
     setState(s => ({ ...initialState, mode: s.mode }))
   }, [state.taskId, onCompleteTask])
 
