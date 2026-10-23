@@ -53,6 +53,17 @@ export default defineConfig({
         navigateFallback: '/index.html',
         runtimeCaching: [
           {
+            // ローカル音声(/sounds/*.mp3) は初回再生時にキャッシュし以降オフライン可
+            urlPattern: /\/sounds\/.*\.mp3$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'sound-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+              rangeRequests: true,
+            },
+          },
+          {
             // Font Awesome CDN キャッシュ（1年）
             urlPattern: /^https:\/\/cdnjs\.cloudflare\.com\/.*/i,
             handler: 'CacheFirst',
